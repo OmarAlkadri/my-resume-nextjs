@@ -1,115 +1,72 @@
-import Image from "next/image";
-import localFont from "next/font/local";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { MyStory } from '../components/my_story';
+import { Skills } from '../components/skills';
+import { CurriculumVitae } from '../components/curriculum_vitae';
+import { References } from '../components/references';
+import { ContactMy } from '../components/contact_my';
+import { Footer } from '../components/footer';
+import { NavBar } from '../components/navBar';
+import { useTranslation } from 'react-i18next';
+import { Header } from '../components/header';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
-  return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/pages/index.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const { i18n } = useTranslation();
+  const [loader, setLoader] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('language') || 'en';
+    const savedMode = localStorage.getItem('mode') === 'true';
+
+    document.body.classList.toggle("dark", savedMode);
+    i18n?.changeLanguage(savedLanguage);
+    setTimeout(() => {
+      setLoader(true);
+    }, 100);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("dir", i18n.language === 'ar' ? "rtl" : "ltr");
+    setLoader(false);
+    setTimeout(() => {
+      setLoader(true);
+    }, 100);
+  }, [i18n.language]);
+
+  if (!loader) return '';
+
+  return (
+    <div className='bg-white dark:bg-black'>
+      <nav className="block w-full px-4 py-2 mx-auto bg-white bg-opacity-60 sticky top-0 shadow lg:px-8 lg:py-3 backdrop-blur-lg backdrop-saturate-150 z-[9999]">
+        <NavBar />
+      </nav>
+      <header>
+        <Header />
+      </header>
+      <main className='w-full flex items-center justify-center relative xl:mr-0 lg:mr-5 mr-0  py-24'>
+        <div className='max-w-7xl flex flex-col gap-y-20'>
+          <section id='my_story' className="w-full sm:px-5 px-4 md:px-5 lg:px-5 mx-auto">
+            <MyStory />
+          </section>
+          <section id='skills'>
+            <Skills />
+          </section>
+          <section id='curriculum_vitae' className="">
+            <CurriculumVitae />
+          </section>
+          <section id='references' className="">
+            <References />
+          </section>
+          <section id='contact_my' className="contact_my">
+            <ContactMy />
+          </section>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      <footer className="bg-gray-200 dark:bg-gray-900">
+        <Footer />
       </footer>
+      <ToastContainer />
     </div>
   );
 }

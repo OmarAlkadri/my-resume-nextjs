@@ -2,6 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
+.custom-img {
+  background-image: url("@/assets/1.jpg");
+}
+
+.dark html {
+  @apply dark:text-gray-200;
+
+}
+
+.dark .custom-img {
+  @apply dark:text-gray-200;
+  background-image: url("@/assets/2.jpg");
+}
+
+
+
+@media (min-width: 1px) and (max-width: 300px) {
+  .languages {
+    @apply flex-row gap-x-8;
+  }
+
+  .education {
+    @apply max-w-[600px];
+  }
+
+  .languages {
+    @apply max-w-[600px] flex-col;
+  }
+
+  .language {
+    @apply max-w-[600px] flex-col gap-x-2;
+  }
+
+  .references {
+    @apply p-8;
+  }
+}
+
+@media (min-width: 301px) and (max-width: 639px) {
+  .languages {
+    @apply flex-row gap-x-8;
+  }
+
+  .education {
+    @apply max-w-[600px] mx-auto;
+  }
+
+  .languages {
+    @apply max-w-[600px] flex-col;
+  }
+
+  .language {
+    @apply max-w-[600px] flex-row gap-x-2;
+  }
+
+  .references {
+    @apply p-8
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+
+  .languages {
+    @apply max-w-[600px] flex-col;
+  }
+
+  .language {
+    @apply max-w-[600px] flex-row gap-x-4;
+  }
+}
+
+@media (min-width: 1024px) {}
+
+p,
+h1,
+span,
+div {
+  @apply text-black dark:text-white;
+}
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
