@@ -1,7 +1,15 @@
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import emailjs from 'emailjs-com';
 import { useTranslation } from 'react-i18next';
+
+
+type FormData = {
+    email: string;
+    name: string;
+    phone: string;
+    message: string;
+};
 
 export const ContactMy = () => {
     const [t] = useTranslation();
@@ -12,7 +20,7 @@ export const ContactMy = () => {
         setError,
         clearErrors,
         formState: { errors }
-    } = useForm();
+    } = useForm<FormData>();
 
     const notify = () => toast.success(t('toast.success'), {
         position: "top-right",
@@ -50,7 +58,9 @@ export const ContactMy = () => {
         return true;
     };
 
-    const onSubmit: any = async (data: { email: string; name: any; phone: any; message: any; }) => {
+
+
+    const onSubmit: SubmitHandler<FormData> = async (data) => {
         const isEmailValid = await validateEmailWithZeroBounce(data.email);
         if (!isEmailValid) {
             setError("email", { type: "manual", message: t("errors.invalidEmail") });
@@ -77,7 +87,7 @@ export const ContactMy = () => {
             notify();
         } catch (err) {
             console.error('Error:', err);
-            setError("general", { type: "manual", message: t("errors.sendEmail") });
+            setError("root", { type: "manual", message: t("errors.sendEmail") });
         }
     };
 
@@ -126,7 +136,7 @@ export const ContactMy = () => {
                             className={`w-full h-12 text-gray-600 placeholder-gray-400 shadow-sm bg-transparent text-lg font-normal leading-7 rounded-full border ${errors.name ? 'border-red-500' : 'border-gray-200'} focus:outline-none pl-4 hover:border-indigo-400`}
                             placeholder={t("form.name")}
                         />
-                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message as any}</p>}
+                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
                     </div>
                     <div className="mb-4">
                         <input
@@ -135,7 +145,7 @@ export const ContactMy = () => {
                             className={`w-full h-12 text-gray-600 placeholder-gray-400 shadow-sm bg-transparent text-lg font-normal leading-7 rounded-full border ${errors.email ? 'border-red-500' : 'border-gray-200'} focus:outline-none pl-4 hover:border-indigo-400`}
                             placeholder={t("form.email")}
                         />
-                        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message as any}</p>}
+                        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
                     </div>
                     <div className="mb-4">
                         <input
@@ -144,7 +154,7 @@ export const ContactMy = () => {
                             className={`w-full h-12 text-gray-600 placeholder-gray-400 shadow-sm bg-transparent text-lg font-normal leading-7 rounded-full border ${errors.phone ? 'border-red-500' : 'border-gray-200'} focus:outline-none pl-4 hover:border-indigo-400`}
                             placeholder={t("form.phone")}
                         />
-                        {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message as any}</p>}
+                        {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
                     </div>
                     <div className="mb-4">
                         <textarea
@@ -153,7 +163,7 @@ export const ContactMy = () => {
                             className={`w-full h-32 p-2.5 text-gray-600 placeholder-gray-400 bg-transparent text-lg shadow-sm font-normal leading-7 rounded-xl border ${errors.message ? 'border-red-500' : 'border-gray-200'} focus:outline-none pl-4 hover:border-indigo-400`}
                             placeholder={t("form.message")}
                         ></textarea>
-                        {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message as any}</p>}
+                        {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>}
                     </div>
 
                     <button

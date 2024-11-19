@@ -117,11 +117,7 @@ export const CurriculumVitae = () => {
                                     <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
                                         <div className=" text-sm font-normal text-gray-500 dark:text-gray-300">
                                             <span className="p-4 flex flex-col gap-y-1 bg-gray-100 text-gray-800 text-xs font-normal me-2 px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-300">
-                                                {CertificationsData.map((item) => {
-                                                    return (
-                                                        <p>{item.description}</p>
-                                                    )
-                                                })}
+                                                {CertificationsData.map((item, index) => <p key={index}>{item.description}</p>)}
                                                 <p className=''>{t('sosyal_uyum_hackathon')} <a href='https://habitatdernegi.org/' className='text-blue-600 dark:text-blue-500'>{t('habitat_association')}</a></p>
                                             </span>
                                         </div>
@@ -153,13 +149,13 @@ export const CurriculumVitae = () => {
                             </div>
                             <ol className="relative top-4 border-s border-gray-200 dark:border-gray-700">
                                 {
-                                    ExperiencesData.map((experience) => {
+                                    ExperiencesData.map((experience, index) => {
                                         return (
-                                            <li className="mb-5 ms-6">
+                                            <li key={index} className="mb-5 ms-6"> {/* Added key={index} */}
                                                 <span className="absolute -start-5 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
                                                     <Image className="w-11 h-11 pr-1 object-contain rounded-full" src={experience.logo} alt="" />
                                                 </span>
-                                                <div className="p-4 bg-white border  border-gray-200 rounded-lg shadow-sm dark:bg-gray-700 dark:border-gray-600">
+                                                <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-700 dark:border-gray-600">
                                                     <div className="items-center justify-between mb-3 sm:flex">
                                                         <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">{experience.time}</time>
                                                         <div className="text-sm font-normal text-gray-500 lex dark:text-gray-300">{experience.position}
@@ -171,11 +167,9 @@ export const CurriculumVitae = () => {
                                                     <div className="p-3 text-xs italic font-normal text-gray-500 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300">
                                                         <ul className="flex flex-col pl-3 gap-y-1 list-disc">
                                                             {
-                                                                experience.responsibilities.map((responsibilitie) => {
+                                                                experience.responsibilities.map((responsibilitie, idx) => {  // Added key to responsibilities
                                                                     return (
-                                                                        <li>
-                                                                            {responsibilitie}
-                                                                        </li>
+                                                                        <li key={idx}>{responsibilitie}</li>  // Added key={idx}
                                                                     )
                                                                 })
                                                             }
@@ -187,6 +181,7 @@ export const CurriculumVitae = () => {
                                     })
                                 }
                             </ol>
+
                         </div>
                         <div className='languages flex flex-col items-start justify-start px-4 md:px-5 lg:px-5 mx-auto h-full w-full gap-y-4 max-w-[250px]'>
                             <div className='relative right-3'>

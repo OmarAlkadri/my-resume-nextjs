@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+
+interface Skill {
+    skillName: string;
+    skillValue: number;
+    skillGroupName: string;
+}
+
 export const Skills = () => {
     const [t] = useTranslation();
 
@@ -64,6 +71,7 @@ export const Skills = () => {
 
     useEffect(() => {
         const observers: IntersectionObserver[] = [];
+        const currentRefs = [...progressRefs.current]; // Safely capture current refs
 
         skillsData.forEach((_, index) => {
             const observer = new IntersectionObserver(
@@ -85,19 +93,21 @@ export const Skills = () => {
                 },
                 { threshold: 0.5 }
             );
-            if (progressRefs.current[index]) {
-                observer.observe(progressRefs.current[index] as HTMLDivElement);
+            if (currentRefs[index]) {
+                observer.observe(currentRefs[index]!);
             }
             observers.push(observer);
         });
+
         return () => {
             observers.forEach((observer, index) => {
-                if (progressRefs.current[index]) {
-                    observer.unobserve(progressRefs.current[index] as HTMLDivElement);
+                if (currentRefs[index]) {
+                    observer.unobserve(currentRefs[index]!);
                 }
             });
         };
     }, [skillsData]);
+
 
     return (
         <div className="w-full px-4 md:px-5 lg:px-5 mx-auto">
@@ -108,22 +118,22 @@ export const Skills = () => {
                         <hr className="w-28 h-1 bg-black border-0 rounded dark:bg-gray-700" />
                     </div>
                     <div className="flex w-full overflow-auto flex-col justify-start items-start flex-wrap h-full max-h-[800px] gap-y-2 gap-x-3">
-                        {Object.values(skillsData.reduce((acc: any, skill: any) => {
+                        {Object.values(skillsData.reduce((acc: { [key: string]: { groupName: string; skills: Array<Skill> } }, skill: Skill) => {
                             const group = acc[skill.skillGroupName] || { groupName: skill.skillGroupName, skills: [] };
                             group.skills.push(skill);
                             acc[skill.skillGroupName] = group;
                             return acc;
-                        }, {})).map((group: any) => {
+                        }, {})).map((group: { groupName: string; skills: Skill[] }) => {
                             return (
                                 <div key={group.groupName} className="flex flex-col w-full max-w-52 pb-2">
                                     <div className="flex-col justify-start lg:items-start items-start flex gap-1">
                                         <h1 className="font-manrope text-xs leading-10 dark:text-white">{group.groupName}</h1>
                                         <hr className="w-12 h-1 relative bottom-2 bg-black border-0 rounded dark:bg-gray-700" />
                                     </div>
-                                    {group.skills.map((skill: any, index: any) => (
+                                    {group.skills.map((skill: Skill, index: number) => (
                                         <div key={skill.skillName} className="flex flex-col">
                                             <div className='text-sm'>{skill.skillName}</div>
-                                            <div ref={(el: any) => (progressRefs.current[index] = el)} className="flex flex-row items-center gap-x-3">
+                                            <div ref={(el: never) => (progressRefs.current[index] = el)} className="flex flex-row items-center gap-x-3">
                                                 <div className="flex w-full h-2 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700" role="progressbar"
                                                     aria-valuenow={values[index]}
                                                     aria-valuemin={0}

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .custom-img {
-  background-image: url("@/assets/1.jpg");
+  background-image: url("../assets/1.jpg");
 }
 
 .dark html {
@@ -13,7 +13,7 @@
 
 .dark .custom-img {
   @apply dark:text-gray-200;
-  background-image: url("@/assets/2.jpg");
+  background-image: url("../assets/2.jpg");
 }
 
 
