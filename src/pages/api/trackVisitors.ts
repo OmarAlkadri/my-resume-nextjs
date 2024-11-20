@@ -17,6 +17,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         city: city || 'Unknown',
         timestamp: new Date(),
     };
+    res.setHeader('Allow', ['GET', 'POST']);
+
     if (req.method === 'POST') {
         try {
 
@@ -51,7 +53,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    res.setHeader('Allow', ['GET', 'POST']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
 };
 
