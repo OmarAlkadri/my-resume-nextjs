@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import cookie from "cookie";
 
 export const NavBar = () => {
     const { t, i18n } = useTranslation();
@@ -8,11 +9,26 @@ export const NavBar = () => {
     const [languages, setLanguages] = useState<{ name: string; key: string }[]>([]);
     const [dark, setDark] = useState<boolean>(false);
     const [visitorCount, setVisitorCount] = useState<number>(0);
-    const [visitor, setVisitor] = useState({ ip: 0, city: '' });
+    const [visitor, setVisitor] = useState({ ip: 0, city: "" });
+
+    // Helper functions for managing cookies
+    const getCookieValue = (key: string): string | undefined => {
+        const cookies = cookie.parse(document.cookie);
+        return cookies[key];
+    };
+
+    const setCookieValue = (key: string, value: string, days = 365): void => {
+        const expires = new Date();
+        expires.setDate(expires.getDate() + days);
+        document.cookie = cookie.serialize(key, value, {
+            path: "/",
+            expires,
+        });
+    };
 
     useEffect(() => {
-        const savedLanguage = localStorage.getItem('language') || 'en';
-        const savedMode = localStorage.getItem('mode') === 'true';
+        const savedLanguage = getCookieValue("language") || "en";
+        const savedMode = getCookieValue("mode") === "true";
 
         setDark(savedMode);
         document.body.classList.toggle("dark", savedMode);
@@ -20,13 +36,12 @@ export const NavBar = () => {
 
         const trackVisitor = async () => {
             try {
-                const response = await fetch('/api/trackVisitors', {
-                    method: 'GET',
+                const response = await fetch("/api/trackVisitors", {
+                    method: "POST",
                 });
                 const data = await response.json();
-                setVisitor(data.visitor)
-                console.log(data.visitor)
-                setVisitorCount(data.totalVisitors);
+                setVisitor(data.visitor);
+                setVisitorCount(data.visitCount);
             } catch (error) {
                 console.error("Error tracking visitor:", error);
             }
@@ -37,14 +52,14 @@ export const NavBar = () => {
 
     const handleLanguageChange = async (language: { name: string; key: string }) => {
         await i18n.changeLanguage(language.key);
-        localStorage.setItem('language', language.key);
+        setCookieValue("language", language.key);
         setIsOpen(false);
     };
 
     const darkModeHandler = (): void => {
         setDark((prev) => {
             const newDarkMode = !prev;
-            localStorage.setItem('mode', newDarkMode.toString());
+            setCookieValue("mode", newDarkMode.toString());
             document.body.classList.toggle("dark", newDarkMode);
             return newDarkMode;
         });
@@ -82,14 +97,10 @@ export const NavBar = () => {
 
     const getLanguageCode = (key: string): string => {
         switch (key) {
-            case "ar":
-                return "sa";
-            case "en":
-                return "uk";
-            case "tr":
-                return "tu";
-            default:
-                return "uk";
+            case "ar": return "sa";
+            case "en": return "uk";
+            case "tr": return "tu";
+            default: return "uk";
         }
     };
 
@@ -103,10 +114,10 @@ export const NavBar = () => {
                 {t("NumberOfVisitorsToMyProfile:")} {visitorCount}
             </div>
             <div className="hidden sm:block">
-                {t("NumberOfVisitorsToMyProfile:")} {visitor?.ip}
+                {t("VisitorIP:")} {visitor?.ip}
             </div>
             <div className="hidden sm:block">
-                {t("NumberOfVisitorsToMyProfile:")} {visitor?.city}
+                {t("VisitorCity:")} {visitor?.city}
             </div>
             <div className="block">
                 <ul className="flex gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 flex-row lg:items-center lg:gap-6">
