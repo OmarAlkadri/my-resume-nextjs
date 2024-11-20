@@ -21,7 +21,7 @@ export const NavBar = () => {
         const trackVisitor = async () => {
             try {
                 const response = await fetch('/api/trackVisitors', {
-                    method: 'POST',
+                    method: 'GET',
                 });
                 const data = await response.json();
                 setVisitor(data.visitor)
