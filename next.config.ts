@@ -4,6 +4,9 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  "compilerOptions": {
+    "baseUrl": "./src"
+  },
   i18n: {
     locales: ['en', 'ar', 'tr'], // اللغات المدعومة
     defaultLocale: 'en', // اللغة الافتراضية
