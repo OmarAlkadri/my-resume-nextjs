@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import cookie, { parse } from 'cookie';
+import { parse, serialize } from 'cookie';
 
 export const NavBar = () => {
     const { t, i18n } = useTranslation();
@@ -20,7 +20,7 @@ export const NavBar = () => {
     const setCookieValue = (key: string, value: string, days = 365): void => {
         const expires = new Date();
         expires.setDate(expires.getDate() + days);
-        document.cookie = cookie.serialize(key, value, {
+        document.cookie = serialize(key, value, {
             path: "/",
             expires,
         });
