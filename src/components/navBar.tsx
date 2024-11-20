@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { parse, serialize } from 'cookie';
+import Cookie from 'js-cookie';
 
 export const NavBar = () => {
     const { t, i18n } = useTranslation();
@@ -11,19 +11,13 @@ export const NavBar = () => {
     const [visitorCount, setVisitorCount] = useState<number>(0);
     const [visitor, setVisitor] = useState({ ip: 0, city: "" });
 
-    // Helper functions for managing cookies
+    // Helper functions for managing cookies with js-cookie
     const getCookieValue = (key: string): string | undefined => {
-        const cookies = parse(document.cookie);
-        return cookies[key];
+        return Cookie.get(key);  // Using js-cookie to get the value
     };
 
     const setCookieValue = (key: string, value: string, days = 365): void => {
-        const expires = new Date();
-        expires.setDate(expires.getDate() + days);
-        document.cookie = serialize(key, value, {
-            path: "/",
-            expires,
-        });
+        Cookie.set(key, value, { expires: days, path: "/" });  // Using js-cookie to set the cookie
     };
 
     useEffect(() => {
@@ -103,7 +97,6 @@ export const NavBar = () => {
             default: return "uk";
         }
     };
-
     return (
         <div className="container flex flex-wrap items-center justify-between mx-auto text-slate-800">
             <a href="#"
