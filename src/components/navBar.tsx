@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import cookie from "cookie";
+import cookie, { parse } from 'cookie';
 
 export const NavBar = () => {
     const { t, i18n } = useTranslation();
@@ -13,7 +13,7 @@ export const NavBar = () => {
 
     // Helper functions for managing cookies
     const getCookieValue = (key: string): string | undefined => {
-        const cookies = cookie.parse(document.cookie);
+        const cookies = parse(document.cookie);
         return cookies[key];
     };
 
