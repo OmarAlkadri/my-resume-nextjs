@@ -4,6 +4,10 @@ import axios from 'axios';
 const visitors: { ip: string; city: string; timestamp: Date }[] = [];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all domains or use a specific domain like 'https://example.com'
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
     if (req.method === 'GET') {
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
         const ipAddress = Array.isArray(ip) ? ip[0] : ip;
