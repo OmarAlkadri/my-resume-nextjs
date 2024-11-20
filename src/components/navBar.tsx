@@ -5,8 +5,10 @@ export const NavBar = () => {
     const { t, i18n } = useTranslation();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [languages, setLanguages] = useState<{ name: string, key: string }[]>([]);
+    const [languages, setLanguages] = useState<{ name: string; key: string }[]>([]);
     const [dark, setDark] = useState<boolean>(false);
+    const [visitorCount, setVisitorCount] = useState<number>(0);
+    const [visitor, setVisitor] = useState({ ip: 0, city: '' });
 
     useEffect(() => {
         const savedLanguage = localStorage.getItem('language') || 'en';
@@ -15,16 +17,32 @@ export const NavBar = () => {
         setDark(savedMode);
         document.body.classList.toggle("dark", savedMode);
         i18n.changeLanguage(savedLanguage);
+
+        const trackVisitor = async () => {
+            try {
+                const response = await fetch('/api/trackVisitors', {
+                    method: 'POST',
+                });
+                const data = await response.json();
+                setVisitor(data.visitor)
+                console.log(data.visitor)
+                setVisitorCount(data.totalVisitors);
+            } catch (error) {
+                console.error("Error tracking visitor:", error);
+            }
+        };
+
+        trackVisitor();
     }, [i18n]);
 
-    const handleLanguageChange = async (language: { name: string, key: string }) => {
+    const handleLanguageChange = async (language: { name: string; key: string }) => {
         await i18n.changeLanguage(language.key);
         localStorage.setItem('language', language.key);
         setIsOpen(false);
     };
 
     const darkModeHandler = (): void => {
-        setDark(prev => {
+        setDark((prev) => {
             const newDarkMode = !prev;
             localStorage.setItem('mode', newDarkMode.toString());
             document.body.classList.toggle("dark", newDarkMode);
@@ -35,43 +53,45 @@ export const NavBar = () => {
     useEffect(() => {
         const setupLanguages = async () => {
             const appLanguages = [
-                { name: t('Arabic'), key: 'ar' },
-                { name: t('English'), key: 'en' },
-                { name: t('Turkish'), key: 'tr' },
+                { name: t("Arabic"), key: "ar" },
+                { name: t("English"), key: "en" },
+                { name: t("Turkish"), key: "tr" },
             ];
             setLanguages(appLanguages);
         };
         setupLanguages();
     }, [t]);
 
-    const LANGUAGE_SELECTOR_ID = 'language-selector';
+    const LANGUAGE_SELECTOR_ID = "language-selector";
     useEffect(() => {
         const handleWindowClick = (event: MouseEvent) => {
-            const target = (event.target as HTMLElement).closest('button');
+            const target = (event.target as HTMLElement).closest("button");
             if (target && target.id === LANGUAGE_SELECTOR_ID) {
                 return;
             }
             setIsOpen(false);
         };
-        window.addEventListener('click', handleWindowClick);
+        window.addEventListener("click", handleWindowClick);
         return () => {
-            window.removeEventListener('click', handleWindowClick);
+            window.removeEventListener("click", handleWindowClick);
         };
     }, []);
 
-    const selectedLanguage = languages.find(language => language.key === i18n.language) ?? { name: '', key: 'en' };
+    const selectedLanguage =
+        languages.find((language) => language.key === i18n.language) ?? { name: "", key: "en" };
+
     const getLanguageCode = (key: string): string => {
         switch (key) {
-            case 'ar':
-                return 'sa';
-            case 'en':
-                return 'uk';
-            case 'tr':
-                return 'tu';
+            case "ar":
+                return "sa";
+            case "en":
+                return "uk";
+            case "tr":
+                return "tu";
             default:
-                return 'uk';
+                return "uk";
         }
-    }
+    };
 
     return (
         <div className="container flex flex-wrap items-center justify-between mx-auto text-slate-800">
@@ -80,7 +100,13 @@ export const NavBar = () => {
                 {t('Omer Alkadri')}
             </a>
             <div className="hidden sm:block">
-                {t('NumberOfVisitorsToMyProfile:')} 0 {/* قم بتعديل العدد حسب الحاجة */}
+                {t("NumberOfVisitorsToMyProfile:")} {visitorCount}
+            </div>
+            <div className="hidden sm:block">
+                {t("NumberOfVisitorsToMyProfile:")} {visitor?.ip}
+            </div>
+            <div className="hidden sm:block">
+                {t("NumberOfVisitorsToMyProfile:")} {visitor?.city}
             </div>
             <div className="block">
                 <ul className="flex gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 flex-row lg:items-center lg:gap-6">
