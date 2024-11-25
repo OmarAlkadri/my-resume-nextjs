@@ -207,5 +207,8 @@ export const translationTR = {
     "Data Communications": "Veri İletişimi",
     "Electric Circuit": "Elektrik Devresi",
     "PayloadCMS": "PayloadCMS",
+    "NumberOfVisitorsToMyProfile": "Profilime Gelen Ziyaretçi Sayısı",
+    "VisitorIP": "Ziyaretçi IP",
+    "Visitor City": "Ziyaretçi Şehir",
     "Storybook": "Storybook"
 }

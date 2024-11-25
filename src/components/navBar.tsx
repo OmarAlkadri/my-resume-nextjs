@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Cookie from 'js-cookie';
+import Cookies from 'js-cookie';  // A better way to handle cookies on the client side
 
 export const NavBar = () => {
     const { t, i18n } = useTranslation();
@@ -9,16 +9,21 @@ export const NavBar = () => {
     const [languages, setLanguages] = useState<{ name: string; key: string }[]>([]);
     const [dark, setDark] = useState<boolean>(false);
     const [visitorCount, setVisitorCount] = useState<number>(0);
-    const [visitor, setVisitor] = useState({ ip: 0, city: "" });
+    const [visitor, setVisitor] = useState({ ip: "", city: "" });
 
     // Helper functions for managing cookies with js-cookie
     const getCookieValue = (key: string): string | undefined => {
-        return Cookie.get(key);  // Using js-cookie to get the value
+        const cookieStore = Cookies;
+        const cookieValue = cookieStore.get(key);
+        return cookieValue;  // Convert RequestCookie to string
     };
 
     const setCookieValue = (key: string, value: string, days = 365): void => {
-        Cookie.set(key, value, { expires: days, path: "/" });  // Using js-cookie to set the cookie
+        const cookieStore = Cookies;
+        // Set cookies using Next.js cookies API
+        cookieStore.set(key, value, { expires: new Date(Date.now() + days * 86400000) }); // 86400000 ms in a day
     };
+
 
     useEffect(() => {
         const savedLanguage = getCookieValue("language") || "en";
@@ -27,21 +32,6 @@ export const NavBar = () => {
         setDark(savedMode);
         document.body.classList.toggle("dark", savedMode);
         i18n.changeLanguage(savedLanguage);
-
-        const trackVisitor = async () => {
-            try {
-                const response = await fetch("/api/trackVisitors", {
-                    method: "POST",
-                });
-                const data = await response.json();
-                setVisitor(data.visitor);
-                setVisitorCount(data.visitCount);
-            } catch (error) {
-                console.error("Error tracking visitor:", error);
-            }
-        };
-
-        trackVisitor();
     }, [i18n]);
 
     const handleLanguageChange = async (language: { name: string; key: string }) => {
@@ -59,6 +49,7 @@ export const NavBar = () => {
         });
     };
 
+    const LANGUAGE_SELECTOR_ID = "language-selector";
     useEffect(() => {
         const setupLanguages = async () => {
             const appLanguages = [
@@ -69,10 +60,24 @@ export const NavBar = () => {
             setLanguages(appLanguages);
         };
         setupLanguages();
-    }, [t]);
+        const trackVisitor = async () => {
+            try {
+                const response = await fetch("/api/trackVisitors", { method: "POST" });
+                const data = await response.json();
 
-    const LANGUAGE_SELECTOR_ID = "language-selector";
-    useEffect(() => {
+                // Update visitor information
+                setVisitor(data.visitor);
+                const test = getCookieValue("visit_count") ?? '0'
+                setVisitorCount(Number(test) ?? 0);
+                setCookieValue('visit_count', (Number(test) + 1).toString())
+
+            } catch (error) {
+                console.error("Error tracking visitor:", error);
+            }
+        };
+
+        trackVisitor();
+
         const handleWindowClick = (event: MouseEvent) => {
             const target = (event.target as HTMLElement).closest("button");
             if (target && target.id === LANGUAGE_SELECTOR_ID) {
@@ -91,12 +96,17 @@ export const NavBar = () => {
 
     const getLanguageCode = (key: string): string => {
         switch (key) {
-            case "ar": return "sa";
-            case "en": return "uk";
-            case "tr": return "tu";
-            default: return "uk";
+            case "ar":
+                return "sa";
+            case "en":
+                return "uk";
+            case "tr":
+                return "tu";
+            default:
+                return "uk";
         }
     };
+
     return (
         <div className="container flex flex-wrap items-center justify-between mx-auto text-slate-800">
             <a href="#"
@@ -104,13 +114,13 @@ export const NavBar = () => {
                 {t('Omer Alkadri')}
             </a>
             <div className="hidden sm:block">
-                {t("NumberOfVisitorsToMyProfile:")} {visitorCount}
+                {t("NumberOfVisitorsToMyProfile") + ': ' + visitorCount}
             </div>
             <div className="hidden sm:block">
-                {t("VisitorIP:")} {visitor?.ip}
+                {t("VisitorIP")}: {visitor?.ip ?? 0}
             </div>
             <div className="hidden sm:block">
-                {t("VisitorCity:")} {visitor?.city}
+                {t("VisitorCity")}: {visitor?.city ?? 0}
             </div>
             <div className="block">
                 <ul className="flex gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 flex-row lg:items-center lg:gap-6">

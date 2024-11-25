@@ -252,4 +252,7 @@ export const translationEN = {
     "Electric Circuit": "Electric Circuit",
     "PayloadCMS": "PayloadCMS",
     "Storybook": "Storybook",
+    "NumberOfVisitorsToMyProfile": "Number Of Visitors",
+    "VisitorIP": "Visitor IP",
+    "VisitorCity": "Visitor City",
 }

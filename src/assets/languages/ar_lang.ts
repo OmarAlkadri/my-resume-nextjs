@@ -248,4 +248,7 @@ export const translationAR = {
     "Electric Circuit": "الدائرة الكهربائية",
     "PayloadCMS": "PayloadCMS",
     "Storybook": "Storybook",
+    "NumberOfVisitorsToMyProfile": "عدد الزوار إلى ملفي الشخصي",
+    "VisitorIP": "رقم تعريف الزائر",
+    "VisitorCity": "مدينة الزائر",
 }

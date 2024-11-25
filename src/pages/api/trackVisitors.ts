@@ -1,59 +1,51 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
-import { serialize, parse } from 'cookie';
 
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const cookies = parse(req.headers.cookie || '');
+    try {
 
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
-    const ipAddress = Array.isArray(ip) ? ip[0] : ip;
 
-    const response = await axios.get(`https://ipapi.co/${ipAddress}/json/`);
-    const { city } = response.data;
-
-    const visitor = {
-        ip: ipAddress,
-        city: city || 'Unknown',
-        timestamp: new Date(),
-    };
-    res.setHeader('Allow', ['GET', 'POST']);
-
-    if (req.method === 'POST') {
+        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
+        const ipAddress = Array.isArray(ip) ? ip[0] : ip;
+        let response = { data: { city: 'unknow' } }
         try {
 
-
-            const visitCount = parseInt(cookies.visitCount || '0') + 1;
-
-            res.setHeader(
-                'Set-Cookie',
-                serialize('visitCount', String(visitCount), {
-                    path: '/',
-                    httpOnly: true,
-                    maxAge: 60 * 60 * 24 * 365, // سنة
-                })
-            );
-
-            return res.status(200).json({
-                message: 'Visitor tracked',
-                visitor,
-                visitCount
-            });
+            response = await axios.get(`https://ipapi.co/${ipAddress}/json/`);
         } catch (error) {
-            return res.status(500).json({ message: 'Failed to fetch location', error });
+            console.log('Server error:', error);
         }
-    }
+        const { city } = response.data;
 
-    if (req.method === 'GET') {
-        // عرض الكوكي عند الطلب
-        const visitCount = parseInt(cookies.visitCount || '0');
-        return res.status(200).json({
-            visitor,
-            visitCount
-        });
-    }
+        const visitor = {
+            ip: ipAddress,
+            city: city || 'Unknown',
+            timestamp: new Date(),
+        };
+        res.setHeader('Allow', ['GET', 'POST']);
 
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+        if (req.method === 'POST') {
+            try {
+
+                return res.status(200).json({
+                    message: 'Visitor tracked',
+                    visitor,
+                });
+            } catch (error) {
+                return res.status(500).json({ message: 'Failed to fetch location', error });
+            }
+        }
+
+        if (req.method === 'GET') {
+            return res.status(200).json({
+                visitor,
+            });
+        }
+        res.status(405).end(`Method ${req.method} Not Allowed`);
+    } catch (error) {
+        console.error('Server error:', error);
+        return res.status(500).json({ message: 'Failed to process the request', error });
+    }
 };
 
 export default handler;

@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     localeDetection: undefined, // الكشف التلقائي عن اللغة
   },
   localePath: path.resolve('./assets/languages'), // مسار ملفات الترجمة
-  reactStrictMode: true,
+  reactStrictMode: false,
 };
 
 export default nextConfig;
