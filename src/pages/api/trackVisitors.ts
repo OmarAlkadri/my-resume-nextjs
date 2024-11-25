@@ -5,13 +5,14 @@ import axios from 'axios';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
 
+        const API_KEY = 'b61d6adf26d94c84b748f66c38ddbc52'; // ضع مفتاحك هنا
 
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
         const ipAddress = Array.isArray(ip) ? ip[0] : ip;
         let response = { data: { city: 'unknow' } }
         try {
 
-            response = await axios.get(`https://ipapi.co/${ipAddress}/json/`);
+            response = await axios.get(`https://api.ipgeolocation.io/ipgeo?apiKey=${API_KEY}&ip=${ipAddress}`);
         } catch (error) {
             console.log('Server error:', error);
         }
