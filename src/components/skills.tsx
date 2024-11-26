@@ -12,7 +12,7 @@ interface SkillGroup {
     skills: Skill[];
 }
 
-const SkillProgressBar = ({ skillName, skillValue, progress }: { skillName: string; skillValue: number; progress: number }) => (
+const SkillProgressBar = ({ skillName, progress }: { skillName: string; progress: number }) => (
     <div className="flex flex-col">
         <div className="text-sm">{skillName}</div>
         <div className="flex flex-row items-center gap-x-3">
@@ -42,7 +42,7 @@ const SkillGroupComponent = ({ groupName, skills, values }: { groupName: string;
             <hr className="w-12 h-1 relative bottom-2 bg-black border-0 rounded dark:bg-gray-700" />
         </div>
         {skills.map((skill, index) => (
-            <SkillProgressBar key={skill.skillName} skillName={skill.skillName} skillValue={skill.skillValue} progress={values[index]} />
+            <SkillProgressBar key={skill.skillName} skillName={skill.skillName} progress={values[index]} />
         ))}
     </div>
 );
@@ -126,8 +126,7 @@ export const Skills = () => {
             const observer = new IntersectionObserver(
                 ([entry]) => {
                     if (entry.isIntersecting) {
-                        let interval: NodeJS.Timeout;
-                        interval = setInterval(() => {
+                        const interval: NodeJS.Timeout = setInterval(() => {
                             setValues((prev) => {
                                 const updatedValues = [...prev];
                                 if (updatedValues[index] < skillsData[index].skillValue) {

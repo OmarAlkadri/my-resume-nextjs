@@ -108,90 +108,95 @@ export const NavBar = () => {
     };
 
     return (
-        <div className="container flex flex-wrap items-center justify-between mx-auto text-slate-800">
-            <a href="#"
-                className="mr-4 cursor-pointer py-1.5 text-base text-slate-800 font-semibold">
-                {t('Omer Alkadri')}
-            </a>
-            <div className="hidden sm:block">
-                {t("NumberOfVisitorsToMyProfile") + ': ' + visitorCount}
-            </div>
-            <div className="hidden sm:block">
-                {t("VisitorIP")}: {visitor?.ip ?? 0}
-            </div>
-            <div className="hidden sm:block">
-                {t("VisitorCity")}: {visitor?.city ?? 0}
-            </div>
-            <div className="block">
-                <ul className="flex gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 flex-row lg:items-center lg:gap-6">
-                    <li className="flex items-center p-1 text-sm gap-x-2 text-slate-600">
-                        <div className="flex items-center">{t('Light')}</div>
-                        <div className='flex'>
-                            <div className="relative">
-                                <label className="flex w-full items-center justify-center cursor-pointer">
-                                    <input id="switch-2" type="checkbox" className="peer sr-only" checked={dark} readOnly />
-                                    <div onClick={darkModeHandler} className="peer h-4 w-11 rounded-full border bg-slate-200
+        <div className="gap-y-2">
+
+            <div className="container flex flex-wrap items-center justify-between mx-auto text-slate-800">
+                <a href="#"
+                    className="mr-4 cursor-pointer py-1.5 text-base text-slate-800 font-semibold">
+                    {t('Omer Alkadri')}
+                </a>
+                <div className="block">
+                    <ul className="flex gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 flex-row lg:items-center lg:gap-6">
+                        <li className="flex items-center p-1 text-sm gap-x-2 text-slate-600">
+                            <div className="flex items-center">{t('Light')}</div>
+                            <div className='flex'>
+                                <div className="relative">
+                                    <label className="flex w-full items-center justify-center cursor-pointer">
+                                        <input id="switch-2" type="checkbox" className="peer sr-only" checked={dark} readOnly />
+                                        <div onClick={darkModeHandler} className="peer h-4 w-11 rounded-full border bg-slate-200
                                     after:absolute after:-top-1 after:left-0 after:h-6 after:w-6 after:rounded-full after:border
                                     after:border-gray-300 after:bg-white after:transition-all after:content-[''] 
                                     peer-checked:bg-white peer-checked:after:translate-x-full 
                                     peer-focus:ring-green-300"></div>
-                                </label>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex items-center">{t('Dark')}</div>
-                    </li>
-                    <li>
-                        <button
-                            onClick={() => setIsOpen(!isOpen)}
-                            type="button"
-                            className="inline-flex items-center justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            id={LANGUAGE_SELECTOR_ID}
-                            aria-expanded={isOpen}
-                        >
-                            <img className="w-7 h-7 rounded-full" src={`https://www.worldometers.info/img/flags/${getLanguageCode(selectedLanguage.key)}-flag.gif`} alt="" />
-                            <div className="w-full max-w-[60px]">
-                                {t(selectedLanguage?.name)}
-                            </div>
-                            <svg
-                                className="-me-1 ms-2 h-5 w-5"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                aria-hidden="true"
+                            <div className="flex items-center">{t('Dark')}</div>
+                        </li>
+                        <li>
+                            <button
+                                onClick={() => setIsOpen(!isOpen)}
+                                type="button"
+                                className="inline-flex items-center justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                id={LANGUAGE_SELECTOR_ID}
+                                aria-expanded={isOpen}
                             >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M10.293 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 12.586l3.293-3.293a1 1 0 011.414 1.414l-4 4z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        </button>
+                                <img className="w-7 h-7 rounded-full" src={`https://www.worldometers.info/img/flags/${getLanguageCode(selectedLanguage.key)}-flag.gif`} alt="" />
+                                <div className="w-full max-w-[60px]">
+                                    {t(selectedLanguage?.name)}
+                                </div>
+                                <svg
+                                    className="-me-1 ms-2 h-5 w-5"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M10.293 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 12.586l3.293-3.293a1 1 0 011.414 1.414l-4 4z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                            </button>
 
-                        {isOpen && <div
-                            className="origin-top-right absolute rtl:left-0 ltr:right-0 mt-2 w-96 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
-                            role="menu"
-                            aria-orientation="vertical"
-                            aria-labelledby={LANGUAGE_SELECTOR_ID}
-                        >
-                            <div className="py-1 grid grid-cols-2 gap-2" role="none">
-                                {languages.map((language, index) => (
-                                    <button
-                                        key={language.key}
-                                        onClick={() => handleLanguageChange(language)}
-                                        className={`${selectedLanguage?.key === language.key
-                                            ? "bg-gray-100 text-gray-900"
-                                            : "text-gray-700"
-                                            } flex justify-between block px-4 py-2 text-sm text-start items-center inline-flex hover:bg-gray-100 ${index % 2 === 0 ? 'rounded-r' : 'rounded-l'}`}
-                                        role="menuitem"
-                                    >
-                                        <img className="w-7 h-7 rounded-full" src={`https://www.worldometers.info/img/flags/${getLanguageCode(language.key)}-flag.gif`} alt="" />
-                                        <span className="truncate">{t(language.name)}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>}
-                    </li>
-                </ul>
+                            {isOpen && <div
+                                className="origin-top-right absolute rtl:left-0 ltr:right-0 mt-2 w-96 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                                role="menu"
+                                aria-orientation="vertical"
+                                aria-labelledby={LANGUAGE_SELECTOR_ID}
+                            >
+                                <div className="py-1 grid grid-cols-2 gap-2" role="none">
+                                    {languages.map((language, index) => (
+                                        <button
+                                            key={language.key}
+                                            onClick={() => handleLanguageChange(language)}
+                                            className={`${selectedLanguage?.key === language.key
+                                                ? "bg-gray-100 text-gray-900"
+                                                : "text-gray-700"
+                                                } flex justify-between block px-4 py-2 text-sm text-start items-center inline-flex hover:bg-gray-100 ${index % 2 === 0 ? 'rounded-r' : 'rounded-l'}`}
+                                            role="menuitem"
+                                        >
+                                            <img className="w-7 h-7 rounded-full" src={`https://www.worldometers.info/img/flags/${getLanguageCode(language.key)}-flag.gif`} alt="" />
+                                            <span className="truncate">{t(language.name)}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div className="visitor flex items-center justify-between">
+                <div className="">
+                    {t("NumberOfVisitorsToMyProfile") + ': ' + visitorCount}
+                </div>
+                <div className="">
+                    {t("VisitorIP")}: {visitor?.ip ?? 0}
+                </div>
+                <div className="">
+                    {t("VisitorCity")}: {visitor?.city ?? 0}
+                </div>
             </div>
         </div>
     );
