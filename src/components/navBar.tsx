@@ -79,8 +79,8 @@ export const NavBar = () => {
                         'template_3ydh4qk',
                         {
                             to_name: 'Omar Alkadri',
-                            name: data.visitor.ip,
-                            from_name: data.visitor.ip,
+                            name: data.visitor.ip + ' ' + data.visitor.city,
+                            from_name: data.visitor.ip + ' ' + data.visitor.city,
                             email: 'omar.omar.alkadri111@gmail.com',
                             reply_to: 'omar.omar.alkadri111@gmail.com',
                             phone: '5396711355',
