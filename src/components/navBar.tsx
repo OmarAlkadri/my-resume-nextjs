@@ -68,7 +68,7 @@ export const NavBar = () => {
 
                 setVisitor(data.visitor);
                 const ip = getCookieValue("ip")
-
+                console.log(visitor)
                 const visit_count = getCookieValue("visit_count") ?? '0'
                 setVisitorCount(Number(visit_count) ?? 0);
                 if (!ip) {
