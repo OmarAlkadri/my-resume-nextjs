@@ -2,6 +2,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import emailjs from 'emailjs-com';
 import { useTranslation } from 'react-i18next';
+import axios from "axios";
 
 
 type FormData = {
@@ -35,24 +36,25 @@ export const ContactMy = () => {
 
     const validateEmailWithZeroBounce = async (email: string) => {
         try {
-            const response = await fetch(
-                `https://api.zerobounce.net/v2/validate?api_key=769a6efce3554afcb82c88c83b43c60a&email=${encodeURIComponent(email)}`,
+            /*const response = await fetch(
+                `https://api.zerobounce.net/v2/validate?api_key=a22585d685f94d9d84b96d2daf6d9c09&email=${encodeURIComponent(email)}`,
                 {
                     method: 'GET',
                 }
-            );
+            );*/
+            const apiKey = '55796da704914dccac2e30ed5c8e8e96'
 
-            if (!response.ok) {
-                throw new Error('Email verification failed');
-            }
+            const url = `https://emailvalidation.abstractapi.com/v1/?api_key=${apiKey}&email=${email}`;
+            const response = await axios.get(url);
+            const data = response.data;
 
-            const data = await response.json();
-
-            if (data.status !== 'valid') {
-                return false;
+            if (data.is_valid_format.value && data.deliverability === 'DELIVERABLE') {
+                return true
+            } else {
+                throw new Error(`❌ Email is invalid or cannot receive emails.`);
             }
         } catch (err) {
-            console.error('Error:', err);
+            console.log('Error:', err);
             return false;
         }
         return true;

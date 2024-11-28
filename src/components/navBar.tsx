@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Cookies from 'js-cookie';  // A better way to handle cookies on the client side
+import emailjs from 'emailjs-com';
 
 export const NavBar = () => {
     const { t, i18n } = useTranslation();
@@ -65,12 +66,33 @@ export const NavBar = () => {
                 const response = await fetch("/api/trackVisitors", { method: "POST" });
                 const data = await response.json();
 
-                // Update visitor information
                 setVisitor(data.visitor);
-                const test = getCookieValue("visit_count") ?? '0'
-                setVisitorCount(Number(test) ?? 0);
-                setCookieValue('visit_count', (Number(test) + 1).toString())
+                const ip = getCookieValue("ip")
 
+                const visit_count = getCookieValue("visit_count") ?? '0'
+                setVisitorCount(Number(visit_count) ?? 0);
+                if (!ip) {
+                    setCookieValue('ip', data.visitor.ip)
+
+                    await emailjs.send(
+                        'service_au36n7r',
+                        'template_3ydh4qk',
+                        {
+                            to_name: 'Omar Alkadri',
+                            name: data.visitor.ip,
+                            from_name: data.visitor.ip,
+                            email: 'omar.omar.alkadri111@gmail.com',
+                            reply_to: 'omar.omar.alkadri111@gmail.com',
+                            phone: '5396711355',
+                            message: { ...data.visitor },
+                        },
+                        '0Duit5ctOLrKA_TL0'
+                    );
+
+                    setVisitorCount(Number(visit_count + 1) ?? 0);
+                    setCookieValue('visit_count', (Number(visit_count) + 1).toString())
+
+                }
             } catch (error) {
                 console.error("Error tracking visitor:", error);
             }
@@ -115,6 +137,9 @@ export const NavBar = () => {
                     className="mr-4 cursor-pointer py-1.5 text-base text-slate-800 font-semibold">
                     {t('Omer Alkadri')}
                 </a>
+                <div className="">
+                    {t("NumberOfVisitorsToMyProfile") + ': ' + visitorCount}
+                </div>
                 <div className="block">
                     <ul className="flex gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 flex-row lg:items-center lg:gap-6">
                         <li className="flex items-center p-1 text-sm gap-x-2 text-slate-600">
@@ -185,17 +210,6 @@ export const NavBar = () => {
                             </div>}
                         </li>
                     </ul>
-                </div>
-            </div>
-            <div className="visitor flex items-center justify-between">
-                <div className="">
-                    {t("NumberOfVisitorsToMyProfile") + ': ' + visitorCount}
-                </div>
-                <div className="">
-                    {t("VisitorIP")}: {visitor?.ip ?? 0}
-                </div>
-                <div className="">
-                    {t("VisitorCity")}: {visitor?.city ?? 0}
                 </div>
             </div>
         </div>
