@@ -22,7 +22,12 @@ export const NavBar = () => {
     const setCookieValue = (key: string, value: string, days = 365): void => {
         const cookieStore = Cookies;
         // Set cookies using Next.js cookies API
-        cookieStore.set(key, value, { expires: days });
+        cookieStore.set(key, value, {
+            expires: days,
+            path: "/",
+            secure: true,
+            sameSite: 'Lax',
+        });
     };
 
 
