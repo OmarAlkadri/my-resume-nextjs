@@ -22,7 +22,7 @@ export const NavBar = () => {
     const setCookieValue = (key: string, value: string, days = 365): void => {
         const cookieStore = Cookies;
         // Set cookies using Next.js cookies API
-        cookieStore.set(key, value, { expires: new Date(Date.now() + days * 86400000) }); // 86400000 ms in a day
+        cookieStore.set(key, value, { expires: days });
     };
 
 
