@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import emailjs from 'emailjs-com';
 
 export const NavBar = () => {
     const { t, i18n } = useTranslation();
@@ -50,20 +49,7 @@ export const NavBar = () => {
             try {
                 const response = await fetch("/api/trackVisitors", { method: "GET" });
                 const data = await response.json();
-                await emailjs.send(
-                    'service_au36n7r',
-                    'template_3ydh4qk',
-                    {
-                        to_name: 'Omar Alkadri',
-                        name: data.visitor.ip + ' ' + data.visitor.city,
-                        from_name: data.visitor.ip + ' ' + data.visitor.city,
-                        email: 'omar.omar.alkadri111@gmail.com',
-                        reply_to: 'omar.omar.alkadri111@gmail.com',
-                        phone: '5396711355',
-                        message: { ...data.visitor },
-                    },
-                    '0Duit5ctOLrKA_TL0'
-                );
+
                 //setVisitor(data.visitor);
                 setVisitorCount(data.visitorCount);
             } catch (error) {

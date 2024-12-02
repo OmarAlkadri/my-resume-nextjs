@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
-import Visitor from '@/models/Visitor'; // استيراد نموذج MongoDB
+import Visitor from '@/models/Visitor';
 import dbConnect from '@/lib/mongodb';
+import emailjs from 'emailjs-com';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
@@ -9,6 +10,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const API_KEY = 'b61d6adf26d94c84b748f66c38ddbc52';
 
+        //const ip = await fetch('https://api.ipify.org?format=json').then((res) => res.json());
+        //ip.ip
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
         const ipAddress = Array.isArray(ip) ? ip[0] : ip;
 
@@ -29,6 +32,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     city: locationData.city,
                     timestamp: new Date(),
                 });
+
+                await emailjs.send(
+                    'service_au36n7r',
+                    'template_3ydh4qk',
+                    {
+                        to_name: 'Omar Alkadri',
+                        name: ipAddress + ' ' + locationData.city,
+                        from_name: ipAddress + ' ' + locationData.city,
+                        email: 'omar.omar.alkadri111@gmail.com',
+                        reply_to: 'omar.omar.alkadri111@gmail.com',
+                        phone: '5396711355',
+                        message: { ...locationData },
+                    },
+                    '0Duit5ctOLrKA_TL0'
+                );
             }
 
             const visitorCount = await Visitor.countDocuments();
