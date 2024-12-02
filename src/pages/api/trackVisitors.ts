@@ -37,6 +37,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 visitor = await Visitor.create({
                     ip: ipAddress,
                     city: locationData.city,
+                    isp: locationData.isp,
+                    languages: locationData.languages,
+                    latitude: locationData.latitude,
+                    longitude: locationData.longitude,
+                    organization: locationData.organization,
+                    zipcode: locationData.zipcode,
                     timestamp: new Date(),
                 });
 

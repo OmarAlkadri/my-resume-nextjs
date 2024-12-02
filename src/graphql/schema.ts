@@ -5,6 +5,12 @@ export const typeDefs = gql`
     id: ID!
     ip: String!
     city: String!
+    isp: String!
+    languages: String!
+    latitude: String!
+    longitude: String!
+    organization: String!
+    zipcode: String!
     createdAt: String!
   }
 
@@ -15,6 +21,13 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    addVisitor(ip: String!, city: String!): Visitor!
+    addVisitor(ip: String!, city: String!,
+    isp!,
+languages!,
+latitude!,
+longitude!,
+organization!,
+zipcode!,
+): Visitor!
   }
 `;
