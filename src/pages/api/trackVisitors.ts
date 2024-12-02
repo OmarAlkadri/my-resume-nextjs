@@ -10,16 +10,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const API_KEY = 'b61d6adf26d94c84b748f66c38ddbc52';
 
-        //const ip = await fetch('https://api.ipify.org?format=json').then((res) => res.json());
+        const ip = await fetch('https://api.ipify.org?format=json').then((res) => res.json());
         //ip.ip
-        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
-        const ipAddress = Array.isArray(ip) ? ip[0] : ip;
+        const ipAddress = ip.ip;
 
         if (req.method === 'GET') {
             let visitor = await Visitor.findOne({ ip: ipAddress });
 
             if (!visitor) {
-                let locationData = { city: 'Unknown' };
+                let locationData = {
+                    city: 'Unknown',
+                    isp: '',
+                    languages: '',
+                    latitude: '',
+                    longitude: '',
+                    organization: '',
+                    zipcode: '',
+                };
                 try {
                     const response = await axios.get(`https://api.ipgeolocation.io/ipgeo?apiKey=${API_KEY}&ip=${ipAddress}`);
                     locationData = response.data;
@@ -43,7 +50,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         email: 'omar.omar.alkadri111@gmail.com',
                         reply_to: 'omar.omar.alkadri111@gmail.com',
                         phone: '5396711355',
-                        message: { ...locationData },
+                        message: `
+                        isp: ${locationData.isp}
+                        languages: ${locationData.languages} 
+                        latitude: ${locationData.latitude}
+                        longitude: ${locationData.longitude}
+                        organization: ${locationData.organization}
+                        zipcode: ${locationData.zipcode}`,
                     },
                     '0Duit5ctOLrKA_TL0'
                 );
