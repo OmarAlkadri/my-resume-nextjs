@@ -24,7 +24,6 @@ export const NavBar = () => {
         // Set cookies using Next.js cookies API
         cookieStore.set(key, value, {
             expires: days,
-            path: "/",
             secure: true,
             sameSite: 'Lax',
         });
