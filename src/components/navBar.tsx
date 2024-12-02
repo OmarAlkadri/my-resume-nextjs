@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Cookies from 'js-cookie';  // A better way to handle cookies on the client side
-import emailjs from 'emailjs-com';
-
 export const NavBar = () => {
     const { t, i18n } = useTranslation();
 
@@ -10,29 +7,11 @@ export const NavBar = () => {
     const [languages, setLanguages] = useState<{ name: string; key: string }[]>([]);
     const [dark, setDark] = useState<boolean>(false);
     const [visitorCount, setVisitorCount] = useState<number>(0);
-    const [visitor, setVisitor] = useState({ ip: "", city: "" });
-
-    // Helper functions for managing cookies with js-cookie
-    const getCookieValue = (key: string): string | undefined => {
-        const cookieStore = Cookies;
-        const cookieValue = cookieStore.get(key);
-        return cookieValue;  // Convert RequestCookie to string
-    };
-
-    const setCookieValue = (key: string, value: string, days = 365): void => {
-        const cookieStore = Cookies;
-        // Set cookies using Next.js cookies API
-        cookieStore.set(key, value, {
-            expires: days,
-            secure: true,
-            sameSite: 'Lax',
-        });
-    };
-
+    // const [visitor, setVisitor] = useState<{ ip: string; city: string }>({ ip: "", city: "" });
 
     useEffect(() => {
-        const savedLanguage = getCookieValue("language") || "en";
-        const savedMode = getCookieValue("mode") === "true";
+        const savedLanguage = localStorage.getItem("language") || "en";
+        const savedMode = localStorage.getItem("mode") === "true";
 
         setDark(savedMode);
         document.body.classList.toggle("dark", savedMode);
@@ -41,14 +20,14 @@ export const NavBar = () => {
 
     const handleLanguageChange = async (language: { name: string; key: string }) => {
         await i18n.changeLanguage(language.key);
-        setCookieValue("language", language.key);
+        localStorage.setItem("language", language.key);
         setIsOpen(false);
     };
 
     const darkModeHandler = (): void => {
         setDark((prev) => {
             const newDarkMode = !prev;
-            setCookieValue("mode", newDarkMode.toString());
+            localStorage.setItem("mode", newDarkMode.toString());
             document.body.classList.toggle("dark", newDarkMode);
             return newDarkMode;
         });
@@ -67,36 +46,10 @@ export const NavBar = () => {
         setupLanguages();
         const trackVisitor = async () => {
             try {
-                const response = await fetch("/api/trackVisitors", { method: "POST" });
+                const response = await fetch("/api/trackVisitors", { method: "GET" });
                 const data = await response.json();
-
-                setVisitor(data.visitor);
-                const ip = getCookieValue("ip")
-                console.log(visitor)
-                const visit_count = getCookieValue("visit_count") ?? '0'
-                setVisitorCount(Number(visit_count) ?? 0);
-                if (!ip) {
-                    setCookieValue('ip', data.visitor.ip)
-
-                    await emailjs.send(
-                        'service_au36n7r',
-                        'template_3ydh4qk',
-                        {
-                            to_name: 'Omar Alkadri',
-                            name: data.visitor.ip + ' ' + data.visitor.city,
-                            from_name: data.visitor.ip + ' ' + data.visitor.city,
-                            email: 'omar.omar.alkadri111@gmail.com',
-                            reply_to: 'omar.omar.alkadri111@gmail.com',
-                            phone: '5396711355',
-                            message: { ...data.visitor },
-                        },
-                        '0Duit5ctOLrKA_TL0'
-                    );
-
-                    setVisitorCount(Number(visit_count + 1) ?? 0);
-                    setCookieValue('visit_count', (Number(visit_count) + 1).toString())
-
-                }
+                //setVisitor(data.visitor);
+                setVisitorCount(data.visitorCount);
             } catch (error) {
                 console.error("Error tracking visitor:", error);
             }
