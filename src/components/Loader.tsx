@@ -4,7 +4,7 @@ import { CSSProperties } from "react";
 interface IPropTypes {
     loaded: boolean
     onlySpinner: boolean
-    children?: any
+    children?: JSX.Element
 }
 
 const override: CSSProperties = {
