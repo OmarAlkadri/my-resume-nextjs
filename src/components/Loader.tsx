@@ -16,14 +16,8 @@ const override: CSSProperties = {
 function Loader(props: IPropTypes): JSX.Element {
     if (!props.loaded || props.onlySpinner) {
         return (
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <div style={{ marginBottom: '1rem' }}>
+            <div>
+                <div>
                     <PulseLoader color="#00dfff" cssOverride={override} loading />
                 </div>
             </div>
