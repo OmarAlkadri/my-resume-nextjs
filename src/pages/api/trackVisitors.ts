@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import Visitor from '@/models/Visitor';
 import dbConnect from '@/lib/mongodb';
-import emailjs from 'emailjs-com';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
@@ -13,6 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const ip = await fetch('https://api.ipify.org?format=json').then((res) => res.json());
         //ip.ip
         const ipAddress = ip.ip;
+        let isTrue = false;
 
         if (req.method === 'GET') {
             let visitor = await Visitor.findOne({ ip: ipAddress });
@@ -45,35 +45,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     zipcode: locationData.zipcode,
                     timestamp: new Date(),
                 });
+                isTrue = true
 
-                await emailjs.send(
-                    'service_au36n7r',
-                    'template_3ydh4qk',
-                    {
-                        to_name: 'Omar Alkadri',
-                        name: ipAddress + ' ' + locationData.city,
-                        from_name: ipAddress + ' ' + locationData.city,
-                        email: 'omar.omar.alkadri111@gmail.com',
-                        reply_to: 'omar.omar.alkadri111@gmail.com',
-                        phone: '5396711355',
-                        message: `
-                        isp: ${locationData.isp}
-                        languages: ${locationData.languages} 
-                        latitude: ${locationData.latitude}
-                        longitude: ${locationData.longitude}
-                        organization: ${locationData.organization}
-                        zipcode: ${locationData.zipcode}`,
-                    },
-                    '0Duit5ctOLrKA_TL0'
-                );
+
             }
-
+            const text = `isp: ${visitor.isp}\nlanguages: ${visitor.languages}\nlatitude: ${visitor.latitude}\nlongitude: ${visitor.longitude}\norganization: ${visitor.organization}\nzipcode: ${visitor.zipcode}`
             const visitorCount = await Visitor.countDocuments();
 
             return res.status(200).json({
                 message: 'Visitor tracked successfully',
                 visitor,
                 visitorCount,
+                text,
+                isTrue
             });
         }
 
