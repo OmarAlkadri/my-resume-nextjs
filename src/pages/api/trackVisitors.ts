@@ -9,9 +9,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const API_KEY = 'b61d6adf26d94c84b748f66c38ddbc52';
 
-        const ip = await fetch('https://api.ipify.org?format=json').then((res) => res.json());
+        // const ip = await fetch('https://api.ipify.org?format=json').then((res) => res.json());
         //ip.ip
-        const ipAddress = ip.ip;
+        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
+        const ipAddress = Array.isArray(ip) ? ip[0] : ip;
+
+        //  const ipAddress = ip.ip;
         let isTrue = false;
 
         if (req.method === 'GET') {
