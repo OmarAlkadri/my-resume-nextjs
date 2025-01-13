@@ -97,16 +97,56 @@ export const translationTR = {
     "experience": {
         "trt_global": {
             "time": "Şubat 2024 - Kasım 2024",
-            "position": "Kapsamlı Web Geliştirici",
-            "level": "İleri Seviye",
+            "position": "Full Stack Geliştirici",
+            "level": "Kıdemli Seviye",
             "company": "TRT Global",
             "responsibility": {
-                "cms_implementation": "Dijital içeriği verimli bir şekilde yönetmek için kapsamlı bir İçerik Yönetim Sistemi (CMS) uygulaması.",
-                "ai_integration": "Kullanıcı deneyimini geliştirmek için Yapay Zeka entegrasyonu.",
-                "news_asset_collaboration": "NewsHQ ve AssetHQ ile işbirliği yaparak iş akışını kolaylaştırmak.",
-                "microservices_architecture": "Uygulamayı desteklemek için mikroservisler mimarisi.",
+                "cms_implementation": "Dijital içeriği verimli bir şekilde yönetmek için kapsamlı bir CMS uygulaması, ekip işbirliğini ve verimliliği artırır.",
+                "ai_integration": "Kullanıcı deneyimini geliştirmek için kişiselleştirilmiş içerik önerileri ile AI entegrasyonu.",
+                "news_asset_collaboration": "HaberHQ ve VarlıkHQ ile işbirliği yaparak iş akışlarını düzene sokmak ve bilgiye erişimi artırmak.",
+                "microservices_architecture": "Büyüyebilir ve sürdürülebilir uygulama geliştirme için mikro hizmet mimarisi.",
                 "technologies_used": "Kullanılan Teknolojiler: [Node.js, React, MongoDB, PostgreSQL, Docker, AWS, Typesense, Next.js, PayloadCMS]"
             }
+        },
+        "hitatek": {
+            "time": "Şubat 2022 - Kasım 2023",
+            "position": "Yazılım Mühendisi",
+            "level": "Orta Seviye",
+            "company": "Hitatek",
+            "responsibility": {
+                "telegram_bot": "Proje ilerlemesini takip etmek, faturaları yönetmek ve izinleri ele almak için Node.js kullanarak bir Telegram botu geliştirdim, proje yönetimi verimliliğini %25 artırdım.",
+                "education_management_system": "Baykar için, eğitim dönemlerini, müfredatı, eğitmenleri, öğrencileri, sınav takvimlerini ve daha fazlasını yöneten Eğitim Yönetim Sistemi yazılımı geliştirdim.",
+                "field_management_system": "Baykar için, şirket kaynaklarını, şubeleri, saha kaynaklarını yönetmek ve çalışan takibi yapmak için bir ERP sistemi olan Saha Yönetim Sistemi'ni geliştirdim.",
+                "election_tracking": "TRT World için Anadolu Ajansı'ndan gerçek zamanlı veriler içeren seçim izleme sayfaları oluşturdum, seçimler sırasında veri erişimini artırdım.",
+                "technologies_used": "Kullanılan Teknolojiler: [Node.js, React, MongoDB, Ubuntu Sunucu, NestJS, C#, AWS, Docker, Angular]"
+            }
+        },
+        "freelancer": {
+            "time": "Ocak 2020 - Ocak 2022",
+            "position": "Serbest Çalışan",
+            "level": "Bağımsız",
+            "company": "Kendi İşim",
+            "responsibility": {
+                "web_development_projects": "Müşteriler için özel çözümler sunarak React ve Node.js kullanarak çeşitli web geliştirme projelerinde çalıştım.",
+                "api_design": "Ön uç uygulamalarla sorunsuz entegrasyon için RESTful API'ler tasarlayıp uyguladım.",
+                "client_collaboration": "İhtiyaçları toplamak ve beklentilerini karşılayan ürünler sunmak için müşterilerle işbirliği yaptım.",
+                "full_project_lifecycle": "Projeyi kavramadan dağıtıma kadar yöneterek yüksek kaliteli kod ve belgeler sağladım.",
+                "technologies_used": "Kullanılan Teknolojiler: [HTML, CSS, JavaScript, React, Node.js, Express, MongoDB]"
+            }
+        },
+        "cv_title": "Özgeçmiş",
+        "education": "Eğitim",
+        "certifications_honors": "Sertifikalar ve Onurlar",
+        "interests_hobbies": "İlgi Alanları ve Hobiler",
+        "work_experiences": "İş Deneyimleri",
+        "languages": "Diller",
+        "education_institution": "Üniversite Adı",
+        "education_department": "Bölüm",
+        "education_program": "Lisans Derecesi",
+        "sosyal_uyum_hackathon": "Sosyal Uyum Hackathon",
+        "habitat_association": "Habitat Derneği",
+        "toast": {
+            "success": "Mesaj başarıyla gönderildi!"
         }
     },
     "Light": "Açık",

@@ -133,57 +133,57 @@ export const translationEN = {
     },
     "experience": {
         "trt_global": {
-            "time": "Şubat 2024 - Kasım 2024",
-            "position": "Full Stack Geliştirici",
-            "level": "Kıdemli Seviye",
+            "time": "February 2024 - November 2024",
+            "position": "Full Stack Developer",
+            "level": "Senior Level",
             "company": "TRT Global",
             "responsibility": {
-                "cms_implementation": "Dijital içeriği verimli bir şekilde yönetmek için kapsamlı bir CMS uygulaması, ekip işbirliğini ve verimliliği artırır.",
-                "ai_integration": "Kullanıcı deneyimini geliştirmek için kişiselleştirilmiş içerik önerileri ile AI entegrasyonu.",
-                "news_asset_collaboration": "HaberHQ ve VarlıkHQ ile işbirliği yaparak iş akışlarını düzene sokmak ve bilgiye erişimi artırmak.",
-                "microservices_architecture": "Büyüyebilir ve sürdürülebilir uygulama geliştirme için mikro hizmet mimarisi.",
-                "technologies_used": "Kullanılan Teknolojiler: [Node.js, React, MongoDB, PostgreSQL, Docker, AWS, Typesense, Next.js, PayloadCMS]"
+                "cms_implementation": "Implemented a comprehensive CMS to efficiently manage digital content, enhancing team collaboration and productivity.",
+                "ai_integration": "Integrated AI for personalized content recommendations to improve user experience.",
+                "news_asset_collaboration": "Collaborated with NewsHQ and AssetHQ to streamline workflows and improve access to information.",
+                "microservices_architecture": "Adopted a microservices architecture for scalable and sustainable application development.",
+                "technologies_used": "Technologies Used: [Node.js, React, MongoDB, Postgresql, Docker, AWS, Typesense, Nextjs, PayloadCMS, jira]"
             }
         },
         "hitatek": {
-            "time": "Şubat 2022 - Kasım 2023",
-            "position": "Yazılım Mühendisi",
-            "level": "Orta Seviye",
+            "time": "February 2022 - November 2023",
+            "position": "Software Engineer",
+            "level": "Mid-Level",
             "company": "Hitatek",
             "responsibility": {
-                "telegram_bot": "Proje ilerlemesini takip etmek, faturaları yönetmek ve izinleri ele almak için Node.js kullanarak bir Telegram botu geliştirdim, proje yönetimi verimliliğini %25 artırdım.",
-                "education_management_system": "Baykar için, eğitim dönemlerini, müfredatı, eğitmenleri, öğrencileri, sınav takvimlerini ve daha fazlasını yöneten Eğitim Yönetim Sistemi yazılımı geliştirdim.",
-                "field_management_system": "Baykar için, şirket kaynaklarını, şubeleri, saha kaynaklarını yönetmek ve çalışan takibi yapmak için bir ERP sistemi olan Saha Yönetim Sistemi'ni geliştirdim.",
-                "election_tracking": "TRT World için Anadolu Ajansı'ndan gerçek zamanlı veriler içeren seçim izleme sayfaları oluşturdum, seçimler sırasında veri erişimini artırdım.",
-                "technologies_used": "Kullanılan Teknolojiler: [Node.js, React, MongoDB, Ubuntu Sunucu, NestJS, C#, AWS, Docker, Angular]"
+                "telegram_bot": "Developed a Telegram bot using Node.js to track project progress, manage invoices, and handle permissions, increasing project management efficiency by 25%.",
+                "education_management_system": "Developed an Education Management System for Baykar, managing semesters, curricula, trainers, trainees, exam schedules, and more.",
+                "field_management_system": "Built the Field Management System for Baykar, an ERP system to manage company resources, branches, field resources, and employee tracking.",
+                "election_tracking": "Created election tracking pages with real-time data from Anadolu Agency for TRT World, improving data access during elections.",
+                "technologies_used": "Technologies Used: [Node.js, React, MongoDB, Ubuntu Server, NestJS, C#, AWS, Docker, Angular]"
             }
         },
         "freelancer": {
-            "time": "Ocak 2020 - Ocak 2022",
-            "position": "Serbest Çalışan",
-            "level": "Bağımsız",
-            "company": "Kendi İşim",
+            "time": "January 2020 - January 2022",
+            "position": "Freelancer",
+            "level": "Independent",
+            "company": "Self-Employed",
             "responsibility": {
-                "web_development_projects": "Müşteriler için özel çözümler sunarak React ve Node.js kullanarak çeşitli web geliştirme projelerinde çalıştım.",
-                "api_design": "Ön uç uygulamalarla sorunsuz entegrasyon için RESTful API'ler tasarlayıp uyguladım.",
-                "client_collaboration": "İhtiyaçları toplamak ve beklentilerini karşılayan ürünler sunmak için müşterilerle işbirliği yaptım.",
-                "full_project_lifecycle": "Projeyi kavramadan dağıtıma kadar yöneterek yüksek kaliteli kod ve belgeler sağladım.",
-                "technologies_used": "Kullanılan Teknolojiler: [HTML, CSS, JavaScript, React, Node.js, Express, MongoDB]"
+                "web_development_projects": "Worked on various web development projects using React and Node.js, delivering custom solutions for clients.",
+                "api_design": "Designed and implemented RESTful APIs for seamless integration with front-end applications.",
+                "client_collaboration": "Collaborated with clients to gather requirements and deliver products meeting their expectations.",
+                "full_project_lifecycle": "Managed projects from conception to deployment, ensuring high-quality code and documentation.",
+                "technologies_used": "Technologies Used: [HTML, CSS, JavaScript, React, Node.js, Express, MongoDB, blazzor, .net core, angularJs, git, ubuntu server,]"
             }
         },
-        "cv_title": "Özgeçmiş",
-        "education": "Eğitim",
-        "certifications_honors": "Sertifikalar ve Onurlar",
-        "interests_hobbies": "İlgi Alanları ve Hobiler",
-        "work_experiences": "İş Deneyimleri",
-        "languages": "Diller",
-        "education_institution": "Üniversite Adı",
-        "education_department": "Bölüm",
-        "education_program": "Lisans Derecesi",
-        "sosyal_uyum_hackathon": "Sosyal Uyum Hackathon",
-        "habitat_association": "Habitat Derneği",
+        "cv_title": "Resume",
+        "education": "Education",
+        "certifications_honors": "Certifications and Honors",
+        "interests_hobbies": "Interests and Hobbies",
+        "work_experiences": "Work Experiences",
+        "languages": "Languages",
+        "education_institution": "University Name",
+        "education_department": "Department",
+        "education_program": "Bachelor's Degree",
+        "sosyal_uyum_hackathon": "Social Cohesion Hackathon",
+        "habitat_association": "Habitat Association",
         "toast": {
-            "success": "Mesaj başarıyla gönderildi!"
+            "success": "Message sent successfully!"
         }
     },
     "about": {
