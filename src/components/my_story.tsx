@@ -22,7 +22,7 @@ export const MyStory = () => {
 
     const handleDownload = () => {
         const link = document.createElement('a');
-        link.href = './cv.pdf';
+        link.href = './SSE Omar Alkadri CV.pdf';
         link.download = 'SSE Omar Alkadri CV.pdf';
         link.click();
     };
