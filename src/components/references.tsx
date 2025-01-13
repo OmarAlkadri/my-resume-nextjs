@@ -15,12 +15,6 @@ export const References = () => {
             title: t('seniorSoftwareDeveloperAndCoFounderAtHitatek'),
             phone: "+90 505 468 37 17",
             email: "info@hitatek.com"
-        },
-        {
-            name: "Amir Alkadri",
-            title: t('productManager'),
-            phone: "+90 553 723 00 31",
-            email: "alkadriamer@gmail.com"
         }
     ];
 
@@ -39,9 +33,7 @@ export const References = () => {
                                 <div className="z-10 flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full ring-0 ring-white dark:bg-blue-900 sm:ring-8 dark:ring-gray-900 shrink-0">
                                     <span className="w-2.5 h-2.5 text-blue-800 dark:text-blue-300 icon-[el--ok-sign]"></span>
                                 </div>
-                                {index < references.length - 1 && (
-                                    <div className="hidden sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
-                                )}
+                                <div className="hidden sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
                             </div>
                             <div className="mt-3 sm:pe-8">
                                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{reference.name}</h3>
