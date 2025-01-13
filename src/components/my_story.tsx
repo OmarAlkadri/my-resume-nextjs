@@ -17,7 +17,7 @@ export const MyStory = () => {
             { title: t('stats.2.title'), description: t('stats.2.description') },
             { title: t('stats.3.title'), description: t('stats.3.description') }
         ],
-        button: t('button')
+        button: t('DownloadMyResume')
     };
 
     const handleDownload = () => {
