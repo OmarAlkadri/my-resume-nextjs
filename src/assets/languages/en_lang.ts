@@ -148,7 +148,7 @@ export const translationEN = {
         "hitatek": {
             "time": "February 2022 - November 2023",
             "position": "Software Engineer",
-            "level": "Mid-Level",
+            "level": "technology team leader",
             "company": "Hitatek",
             "responsibility": {
                 "telegram_bot": "Developed a Telegram bot using Node.js to track project progress, manage invoices, and handle permissions, increasing project management efficiency by 25%.",

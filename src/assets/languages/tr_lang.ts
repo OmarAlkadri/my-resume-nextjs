@@ -111,7 +111,7 @@ export const translationTR = {
         "hitatek": {
             "time": "Şubat 2022 - Kasım 2023",
             "position": "Yazılım Mühendisi",
-            "level": "Orta Seviye",
+            "level": "Teknoloji Ekip Lideri",
             "company": "Hitatek",
             "responsibility": {
                 "telegram_bot": "Proje ilerlemesini takip etmek, faturaları yönetmek ve izinleri ele almak için Node.js kullanarak bir Telegram botu geliştirdim, proje yönetimi verimliliğini %25 artırdım.",
