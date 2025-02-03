@@ -115,7 +115,7 @@ export const NavBar = () => {
             window.removeEventListener("click", handleWindowClick);
             window.removeEventListener("beforeunload", handleExit);
         };
-    }, [visitor, entryTime]);
+    }, []);
 
     const selectedLanguage =
         languages.find((language) => language.key === i18n.language) ?? { name: "", key: "en" };
