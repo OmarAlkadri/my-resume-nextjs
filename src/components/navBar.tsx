@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import Loader from "./Loader";
-import emailjs from "emailjs-com";
 
 interface Visitor {
     visitor: {
@@ -19,10 +18,9 @@ export const NavBar = () => {
     const [languages, setLanguages] = useState<{ name: string; key: string }[]>([]);
     const [dark, setDark] = useState<boolean>(false);
     const [visitorCount, setVisitorCount] = useState<number>(0);
-    const [visitor, setVisitor] = useState<Visitor | null>(null);
     const [entryTime, setEntryTime] = useState<number>(Date.now());
     const [loading, setLoading] = useState(true);
-    const visitorRef = useRef<Visitor | null>(null); // تخزين الزائر بأحدث قيمة
+    const visitorRef = useRef<Visitor | null>(null);
     useEffect(() => {
         const savedLanguage = localStorage.getItem("language") || "en";
         const savedMode = localStorage.getItem("mode") === "true";
@@ -68,7 +66,6 @@ export const NavBar = () => {
                 const data = await response.json();
 
                 setVisitorCount(data.visitorCount);
-                setVisitor(data);
                 visitorRef.current = data;
                 setLoading(false);
             } catch (error) {
