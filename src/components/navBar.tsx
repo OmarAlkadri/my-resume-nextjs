@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import Loader from "./Loader";
 import emailjs from "emailjs-com";
 
 interface Visitor {
-    ip: string;
-    city: string;
+    visitor: {
+        ip: string;
+        city: string;
+    }
     text: string;
 }
 
@@ -20,7 +22,7 @@ export const NavBar = () => {
     const [visitor, setVisitor] = useState<Visitor | null>(null);
     const [entryTime, setEntryTime] = useState<number>(Date.now());
     const [loading, setLoading] = useState(true);
-
+    const visitorRef = useRef<Visitor | null>(null); // تخزين الزائر بأحدث قيمة
     useEffect(() => {
         const savedLanguage = localStorage.getItem("language") || "en";
         const savedMode = localStorage.getItem("mode") === "true";
@@ -67,6 +69,7 @@ export const NavBar = () => {
 
                 setVisitorCount(data.visitorCount);
                 setVisitor(data);
+                visitorRef.current = data;
                 setLoading(false);
             } catch (error) {
                 console.error("Error tracking visitor:", error);
@@ -78,28 +81,23 @@ export const NavBar = () => {
         const handleExit = async () => {
             const exitTime = Date.now();
             const durationInSeconds = Math.floor((exitTime - entryTime) / 1000);
+            const visitor = visitorRef.current;
 
             if (visitor) {
-                try {
-                    await emailjs.send(
-                        "service_au36n7r",
-                        "template_3ydh4qk",
-                        {
-                            to_name: "Omar Alkadri",
-                            name: `${visitor.ip} ${visitor.city} - Stayed ${durationInSeconds} seconds`,
-                            from_name: `${visitor.ip} ${visitor.city} - Stayed ${durationInSeconds} seconds`,
-                            email: "omar.omar.alkadri11@gmail.com",
-                            reply_to: "omar.omar.alkadri111@gmail.com",
-                            phone: "5396711355",
-                            message: visitor.text,
-                        },
-                        "0Duit5ctOLrKA_TL0"
-                    );
-                } catch (error) {
-                    console.error("Error sending email:", error);
-                }
+                const payload = {
+                    to_name: "Omar Alkadri",
+                    name: `${visitor.visitor.ip} ${visitor.visitor.city} - Stayed ${durationInSeconds} seconds`,
+                    email: "omar.omar.alkadri11@gmail.com",
+                    reply_to: "omar.omar.alkadri111@gmail.com",
+                    phone: "5396711355",
+                    message: visitor.text,
+                };
+                const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+
+                navigator.sendBeacon("/api/sendExitEmail", blob);
             }
         };
+
 
         const handleWindowClick = (event: MouseEvent) => {
             if ((event.target as HTMLElement).closest("button")?.id === LANGUAGE_SELECTOR_ID) {
