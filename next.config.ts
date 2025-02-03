@@ -4,6 +4,9 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  images: {
+    domains: ['www.worldometers.info'],
+  },
   "compilerOptions": {
     "baseUrl": "./src"
   },

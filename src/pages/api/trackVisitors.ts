@@ -12,7 +12,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // const ip = await fetch('https://api.ipify.org?format=json').then((res) => res.json());
         //ip.ip
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
-        const ipAddress = Array.isArray(ip) ? ip[0] : ip;
+
+        let ipAddress = Array.isArray(ip) ? ip[0] : ip;
+        if (ipAddress == '::1') {
+            const ip = await fetch('https://api.ipify.org?format=json').then((res) => res.json());
+            ipAddress = ip.ip;
+        }
 
         //  const ipAddress = ip.ip;
         let isTrue = false;
