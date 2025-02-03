@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
 import Loader from "./Loader";
-import emailjs from 'emailjs-com';
+import emailjs from "emailjs-com";
+
+interface Visitor {
+    ip: string;
+    city: string;
+    text: string;
+}
 
 export const NavBar = () => {
     const { t, i18n } = useTranslation();
@@ -10,8 +17,8 @@ export const NavBar = () => {
     const [languages, setLanguages] = useState<{ name: string; key: string }[]>([]);
     const [dark, setDark] = useState<boolean>(false);
     const [visitorCount, setVisitorCount] = useState<number>(0);
-    // const [visitor, setVisitor] = useState<{ ip: string; city: string }>({ ip: "", city: "" });
-
+    const [visitor, setVisitor] = useState<Visitor | null>(null);
+    const [entryTime, setEntryTime] = useState<number>(Date.now());
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -39,41 +46,28 @@ export const NavBar = () => {
     };
 
     const LANGUAGE_SELECTOR_ID = "language-selector";
+
     useEffect(() => {
-        const setupLanguages = async () => {
-            const appLanguages = [
+        const setupLanguages = () => {
+            setLanguages([
                 { name: t("Arabic"), key: "ar" },
                 { name: t("English"), key: "en" },
                 { name: t("Turkish"), key: "tr" },
-            ];
-            setLanguages(appLanguages);
+            ]);
         };
+
         setupLanguages();
+        setEntryTime(Date.now());
+
         const trackVisitor = async () => {
             try {
-                setLoading(true)
+                setLoading(true);
                 const response = await fetch("/api/trackVisitors", { method: "GET" });
                 const data = await response.json();
-                if (data.isTrue) {
-                    await emailjs.send(
-                        'service_au36n7r',
-                        'template_3ydh4qk',
-                        {
-                            to_name: 'Omar Alkadri',
-                            name: data.visitor.ip + ' ' + data.visitor.city,
-                            from_name: data.visitor.ip + ' ' + data.visitor.city,
-                            email: 'omar.omar.alkadri11 1@gmail.com',
-                            reply_to: 'omar.omar.alkadri111@gmail.com',
-                            phone: '5396711355',
-                            message: data.text,
-                        },
-                        '0Duit5ctOLrKA_TL0'
-                    );
-                }
-                //setVisitor(data.visitor);
-                setVisitorCount(data.visitorCount);
-                setLoading(false)
 
+                setVisitorCount(data.visitorCount);
+                setVisitor(data);
+                setLoading(false);
             } catch (error) {
                 console.error("Error tracking visitor:", error);
             }
@@ -81,18 +75,47 @@ export const NavBar = () => {
 
         trackVisitor();
 
+        const handleExit = async () => {
+            const exitTime = Date.now();
+            const durationInSeconds = Math.floor((exitTime - entryTime) / 1000);
+
+            if (visitor) {
+                try {
+                    await emailjs.send(
+                        "service_au36n7r",
+                        "template_3ydh4qk",
+                        {
+                            to_name: "Omar Alkadri",
+                            name: `${visitor.ip} ${visitor.city} - Stayed ${durationInSeconds} seconds`,
+                            from_name: `${visitor.ip} ${visitor.city} - Stayed ${durationInSeconds} seconds`,
+                            email: "omar.omar.alkadri11@gmail.com",
+                            reply_to: "omar.omar.alkadri111@gmail.com",
+                            phone: "5396711355",
+                            message: visitor.text,
+                        },
+                        "0Duit5ctOLrKA_TL0"
+                    );
+                } catch (error) {
+                    console.error("Error sending email:", error);
+                }
+            }
+        };
+
         const handleWindowClick = (event: MouseEvent) => {
-            const target = (event.target as HTMLElement).closest("button");
-            if (target && target.id === LANGUAGE_SELECTOR_ID) {
+            if ((event.target as HTMLElement).closest("button")?.id === LANGUAGE_SELECTOR_ID) {
                 return;
             }
             setIsOpen(false);
         };
+
         window.addEventListener("click", handleWindowClick);
+        window.addEventListener("beforeunload", handleExit);
+
         return () => {
             window.removeEventListener("click", handleWindowClick);
+            window.removeEventListener("beforeunload", handleExit);
         };
-    }, []);
+    }, [visitor, entryTime]);
 
     const selectedLanguage =
         languages.find((language) => language.key === i18n.language) ?? { name: "", key: "en" };
@@ -111,38 +134,36 @@ export const NavBar = () => {
     };
 
     return (
-
         <div className="gap-y-2">
-
             <div className="container flex flex-wrap items-center justify-between mx-auto text-slate-800">
-                <a href="#"
-                    className="mr-4 cursor-pointer py-1.5 text-base text-slate-800 font-semibold">
-                    {t('Omer Alkadri')}
+                <a href="#" className="mr-4 cursor-pointer py-1.5 text-base text-slate-800 font-semibold">
+                    {t("Omer Alkadri")}
                 </a>
                 <Loader loaded={!loading} onlySpinner={false}>
-
-                    <div className="">
-                        {t("NumberOfVisitorsToMyProfile") + ': ' + visitorCount}
-                    </div>
+                    <div>{t("NumberOfVisitorsToMyProfile") + ": " + visitorCount}</div>
                 </Loader>
 
                 <div className="block">
                     <ul className="flex gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 flex-row lg:items-center lg:gap-6">
                         <li className="flex items-center p-1 text-sm gap-x-2 text-slate-600">
-                            <div className="flex items-center">{t('Light')}</div>
-                            <div className='flex'>
+                            <div className="flex items-center">{t("Light")}</div>
+                            <div className="flex">
                                 <div className="relative">
+
                                     <label className="flex w-full items-center justify-center cursor-pointer">
                                         <input id="switch-2" type="checkbox" className="peer sr-only" checked={dark} readOnly />
-                                        <div onClick={darkModeHandler} className="peer h-4 w-11 rounded-full border bg-slate-200
-                                    after:absolute after:-top-1 after:left-0 after:h-6 after:w-6 after:rounded-full after:border
-                                    after:border-gray-300 after:bg-white after:transition-all after:content-[''] 
-                                    peer-checked:bg-white peer-checked:after:translate-x-full 
-                                    peer-focus:ring-green-300"></div>
+                                        <div
+                                            onClick={darkModeHandler}
+                                            className="peer h-4 w-11 rounded-full border bg-slate-200
+                      after:absolute after:-top-1 after:left-0 after:h-6 after:w-6 after:rounded-full after:border
+                      after:border-gray-300 after:bg-white after:transition-all after:content-[''] 
+                      peer-checked:bg-white peer-checked:after:translate-x-full 
+                      peer-focus:ring-green-300"
+                                        />
                                     </label>
                                 </div>
                             </div>
-                            <div className="flex items-center">{t('Dark')}</div>
+                            <div className="flex items-center">{t("Dark")}</div>
                         </li>
                         <li>
                             <button
@@ -152,10 +173,14 @@ export const NavBar = () => {
                                 id={LANGUAGE_SELECTOR_ID}
                                 aria-expanded={isOpen}
                             >
-                                <img className="w-7 h-7 rounded-full" src={`https://www.worldometers.info/img/flags/${getLanguageCode(selectedLanguage.key)}-flag.gif`} alt="" />
-                                <div className="w-full max-w-[60px]">
-                                    {t(selectedLanguage?.name)}
-                                </div>
+                                <Image
+                                    className="w-7 h-7 rounded-full"
+                                    src={`https://www.worldometers.info/img/flags/${getLanguageCode(selectedLanguage.key)}-flag.gif`}
+                                    alt="Language Flag"
+                                    width={28}
+                                    height={28}
+                                />
+                                <div className="w-full max-w-[60px]">{t(selectedLanguage?.name)}</div>
                                 <svg
                                     className="-me-1 ms-2 h-5 w-5"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -171,34 +196,28 @@ export const NavBar = () => {
                                 </svg>
                             </button>
 
-                            {isOpen && <div
-                                className="origin-top-right absolute rtl:left-0 ltr:right-0 mt-2 w-96 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
-                                role="menu"
-                                aria-orientation="vertical"
-                                aria-labelledby={LANGUAGE_SELECTOR_ID}
-                            >
-                                <div className="py-1 grid grid-cols-2 gap-2" role="none">
-                                    {languages.map((language, index) => (
-                                        <button
-                                            key={language.key}
-                                            onClick={() => handleLanguageChange(language)}
-                                            className={`${selectedLanguage?.key === language.key
-                                                ? "bg-gray-100 text-gray-900"
-                                                : "text-gray-700"
-                                                } flex justify-between block px-4 py-2 text-sm text-start items-center inline-flex hover:bg-gray-100 ${index % 2 === 0 ? 'rounded-r' : 'rounded-l'}`}
-                                            role="menuitem"
-                                        >
-                                            <img className="w-7 h-7 rounded-full" src={`https://www.worldometers.info/img/flags/${getLanguageCode(language.key)}-flag.gif`} alt="" />
-                                            <span className="truncate">{t(language.name)}</span>
-                                        </button>
-                                    ))}
+                            {isOpen && (
+                                <div className="origin-top-right absolute rtl:left-0 ltr:right-0 mt-2 w-96 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                    <div className="py-1 grid grid-cols-2 gap-2">
+                                        {languages.map((language) => (
+                                            <button key={language.key} onClick={() => handleLanguageChange(language)}>
+                                                <Image
+                                                    className="w-7 h-7 rounded-full"
+                                                    src={`https://www.worldometers.info/img/flags/${getLanguageCode(language.key)}-flag.gif`}
+                                                    alt="Language Flag"
+                                                    width={28}
+                                                    height={28}
+                                                />
+                                                <span className="truncate">{t(language.name)}</span>
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>}
+                            )}
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-
     );
 };
