@@ -15,17 +15,17 @@ interface SkillGroup {
 
 const SkillProgressBar = ({ skillName, progress }: { skillName: string; progress: number }) => {
     const { ref, inView } = useInView({
-        threshold: 0.70, // ✅ يتم التفعيل عند ظهور 50% من العنصر
-        triggerOnce: false, // ✅ التفعيل يحدث عند الدخول والخروج
+        threshold: 0.70,
+        triggerOnce: false,
     });
 
     const [animatedProgress, setAnimatedProgress] = useState(0);
 
     useEffect(() => {
         if (inView) {
-            setAnimatedProgress(progress); // عند ظهور العنصر، يتم ضبط التقدم الحقيقي
+            setAnimatedProgress(progress);
         } else {
-            setAnimatedProgress(0); // عند الخروج، يتم تصفير القيمة
+            setAnimatedProgress(0);
         }
     }, [inView, progress]);
 

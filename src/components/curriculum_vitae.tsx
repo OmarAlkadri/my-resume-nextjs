@@ -4,6 +4,8 @@ import sakaryaIcon from '../assets/sakaryaIcon.png';
 import freelancer from '../assets/freelancer.png';
 import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
+import { useInView } from "react-intersection-observer";
+import { useEffect, useState } from 'react';
 
 export const CurriculumVitae = () => {
     const { t } = useTranslation();
@@ -74,6 +76,23 @@ export const CurriculumVitae = () => {
         },
     ];
 
+    const { ref: interestsRef, inView: interestsInView } = useInView({ threshold: 0.5, triggerOnce: false });
+    const { ref: certificationsRef, inView: certificationsInView } = useInView({ threshold: 0.5, triggerOnce: false });
+    const [className, setClassName] = useState('animate-zoomIn');
+    const { ref: educationRef, inView: educationInView, entry } = useInView({
+        threshold: [0, 0.1, 0.5, 1],
+        triggerOnce: false
+    });
+    useEffect(() => {
+        if (entry) {
+            const isAlmostGone = entry.intersectionRatio < 0.99;
+            if (!isAlmostGone) {
+                setClassName('animate-zoomIn')
+            } else
+                setClassName('animate-zoomOut')
+        }
+    }, [entry]);
+
     return (
         <div className="w-full px-4 md:px-5 lg:px-5 mx-auto">
             <div className="w-full flex-col justify-center lg:items-start items-center gap-10 inline-flex">
@@ -87,7 +106,10 @@ export const CurriculumVitae = () => {
                             <div className='relative right-4'>
                                 {t('educationName')}
                             </div>
-                            <ol className="relative top-4 border-s border-gray-200 dark:border-gray-700">
+                            <ol ref={educationRef}
+                                className={`relative top-4 border-s border-gray-200 dark:border-gray-700 transition-all duration-1000 
+                                    ${className}`}
+                            >
                                 <li className="mb-10 ms-6">
                                     <span className="absolute -start-5 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
                                         <Image className="w-11 h-11 object-contain rounded-full" src={EducationData.logo} alt="" />
@@ -109,7 +131,7 @@ export const CurriculumVitae = () => {
                             <div className='relative right-4'>
                                 {t('certifications_honors')}
                             </div>
-                            <ol className="relative top-4 border-s border-gray-200 dark:border-gray-700">
+                            <ol ref={certificationsRef} className={`relative top-4 border-s border-gray-200 dark:border-gray-700 ${certificationsInView ? 'animate-fadeInBounceLeft' : 'opacity-0'}`}>
                                 <li className="mb-10 ms-6">
                                     <span className="absolute -start-7 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
                                         <span className="w-14 h-14 object-contain rounded-full icon-[iconamoon--certificate-badge-light] fill-current text-blue-500 dark:text-white"></span>
@@ -128,14 +150,19 @@ export const CurriculumVitae = () => {
                             <div className='relative right-4'>
                                 {t('interests_hobbies')}
                             </div>
-                            <ol className="relative top-4 border-s border-gray-200 dark:border-gray-700">
+                            <ol
+                                ref={interestsRef}
+                                className={`relative top-4 border-s border-gray-200 dark:border-gray-700 ${interestsInView ? 'animate-slideInLeft' : 'opacity-0'}`}>
                                 <li className="mb-10 ms-6">
                                     <span className="absolute -start-5 -ml-0.5 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
                                         <span className="w-11 h-11 object-contain rounded-full icon-[material-symbols-light--interests-outline-rounded] fill-current text-blue-500 dark:text-white"></span>
                                     </span>
                                     <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
                                         <div className=" text-sm font-normal text-gray-500 dark:text-gray-300">
-                                            <span className="p-4 flex flex-col bg-gray-100 text-gray-800 text-xs font-normal me-2 px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-300">
+                                            <span
+                                                className={`p-4 flex flex-col bg-gray-100 text-gray-800 text-xs font-normal me-2 px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-300 transition-opacity duration-1000 
+                                                    `}
+                                            >
                                                 {InterestsData}
                                             </span>
                                         </div>
@@ -148,10 +175,11 @@ export const CurriculumVitae = () => {
                                 {t('work_experiences')}
                             </div>
                             <ol className="relative top-4 border-s border-gray-200 dark:border-gray-700">
+
                                 {
                                     ExperiencesData.map((experience, index) => {
                                         return (
-                                            <li key={index} className="mb-5 ms-6"> {/* Added key={index} */}
+                                            <li key={index} className="mb-5 ms-6">
                                                 <span className="absolute -start-5 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
                                                     <Image className="w-11 h-11 pr-1 object-contain rounded-full" src={experience.logo} alt="" />
                                                 </span>
@@ -167,17 +195,24 @@ export const CurriculumVitae = () => {
                                                     <div className="p-3 text-xs italic font-normal text-gray-500 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300">
                                                         <ul className="flex flex-col pl-3 gap-y-1 list-disc">
                                                             {
-                                                                experience.responsibilities.map((responsibilitie, idx) => {  // Added key to responsibilities
+                                                                experience.responsibilities.map((responsibility, idx) => {
+                                                                    const { ref, inView } = useInView({ threshold: 1, triggerOnce: false });
                                                                     return (
-                                                                        <li key={idx}>{responsibilitie}</li>  // Added key={idx}
-                                                                    )
+                                                                        <li
+                                                                            key={idx}
+                                                                            ref={ref}
+                                                                            className={`transition-opacity duration-1000 ${inView ? 'animate-slideInDown' : 'opacity-0'}`}
+                                                                        >
+                                                                            {responsibility}
+                                                                        </li>
+                                                                    );
                                                                 })
                                                             }
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </li>
-                                        )
+                                        );
                                     })
                                 }
                             </ol>
