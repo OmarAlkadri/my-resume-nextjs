@@ -79,7 +79,7 @@ export const CurriculumVitae = () => {
     const { ref: interestsRef, inView: interestsInView } = useInView({ threshold: 0.5, triggerOnce: false });
     const { ref: certificationsRef, inView: certificationsInView } = useInView({ threshold: 0.5, triggerOnce: false });
     const [className, setClassName] = useState('animate-zoomIn');
-    const { ref: educationRef, inView: educationInView, entry } = useInView({
+    const { ref: educationRef, entry } = useInView({
         threshold: [0, 0.1, 0.5, 1],
         triggerOnce: false
     });
@@ -92,6 +92,20 @@ export const CurriculumVitae = () => {
                 setClassName('animate-zoomOut')
         }
     }, [entry]);
+
+
+    const AnimatedListItem = ({ children }: { children: React.ReactNode }) => {
+        const { ref, inView } = useInView({ threshold: 1, triggerOnce: false });
+
+        return (
+            <li
+                ref={ref}
+                className={`transition-opacity duration-1000 ${inView ? 'animate-slideInDown' : 'opacity-0'}`}
+            >
+                {children}
+            </li>
+        );
+    };
 
     return (
         <div className="w-full px-4 md:px-5 lg:px-5 mx-auto">
@@ -195,18 +209,11 @@ export const CurriculumVitae = () => {
                                                     <div className="p-3 text-xs italic font-normal text-gray-500 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300">
                                                         <ul className="flex flex-col pl-3 gap-y-1 list-disc">
                                                             {
-                                                                experience.responsibilities.map((responsibility, idx) => {
-                                                                    const { ref, inView } = useInView({ threshold: 1, triggerOnce: false });
-                                                                    return (
-                                                                        <li
-                                                                            key={idx}
-                                                                            ref={ref}
-                                                                            className={`transition-opacity duration-1000 ${inView ? 'animate-slideInDown' : 'opacity-0'}`}
-                                                                        >
-                                                                            {responsibility}
-                                                                        </li>
-                                                                    );
-                                                                })
+                                                                experience.responsibilities.map((responsibility, idx) => (
+                                                                    <AnimatedListItem key={idx}>
+                                                                        {responsibility}
+                                                                    </AnimatedListItem>
+                                                                ))
                                                             }
                                                         </ul>
                                                     </div>
