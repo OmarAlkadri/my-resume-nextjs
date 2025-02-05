@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from 'react';
+import AnimatedListItem from './animatedListItem';
 
 export const CurriculumVitae = () => {
     const { t } = useTranslation();
@@ -194,20 +195,9 @@ export const CurriculumVitae = () => {
                                                     </div>
                                                     <div className="p-3 text-xs italic font-normal text-gray-500 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300">
                                                         <ul className="flex flex-col pl-3 gap-y-1 list-disc">
-                                                            {
-                                                                experience.responsibilities.map((responsibility, idx) => {
-                                                                    const { ref, inView } = useInView({ threshold: 1, triggerOnce: false });
-
-                                                                    return (
-                                                                        <li
-                                                                            ref={ref}
-                                                                            className={`transition-opacity duration-1000 ${inView ? 'animate-slideInDown' : 'opacity-0'}`}
-                                                                        >
-                                                                            {responsibility}
-                                                                        </li>
-                                                                    );
-                                                                })
-                                                            }
+                                                            {experience.responsibilities.map((responsibility: string, idx) => (
+                                                                <AnimatedListItem key={idx} responsibility={responsibility} />
+                                                            ))}
                                                         </ul>
                                                     </div>
                                                 </div>
