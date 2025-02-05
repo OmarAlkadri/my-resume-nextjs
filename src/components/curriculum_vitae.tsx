@@ -93,20 +93,6 @@ export const CurriculumVitae = () => {
         }
     }, [entry]);
 
-
-    const AnimatedListItem = ({ children }: { children: React.ReactNode }) => {
-        const { ref, inView } = useInView({ threshold: 1, triggerOnce: false });
-
-        return (
-            <li
-                ref={ref}
-                className={`transition-opacity duration-1000 ${inView ? 'animate-slideInDown' : 'opacity-0'}`}
-            >
-                {children}
-            </li>
-        );
-    };
-
     return (
         <div className="w-full px-4 md:px-5 lg:px-5 mx-auto">
             <div className="w-full flex-col justify-center lg:items-start items-center gap-10 inline-flex">
@@ -209,11 +195,18 @@ export const CurriculumVitae = () => {
                                                     <div className="p-3 text-xs italic font-normal text-gray-500 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300">
                                                         <ul className="flex flex-col pl-3 gap-y-1 list-disc">
                                                             {
-                                                                experience.responsibilities.map((responsibility, idx) => (
-                                                                    <AnimatedListItem key={idx}>
-                                                                        {responsibility}
-                                                                    </AnimatedListItem>
-                                                                ))
+                                                                experience.responsibilities.map((responsibility, idx) => {
+                                                                    const { ref, inView } = useInView({ threshold: 1, triggerOnce: false });
+
+                                                                    return (
+                                                                        <li
+                                                                            ref={ref}
+                                                                            className={`transition-opacity duration-1000 ${inView ? 'animate-slideInDown' : 'opacity-0'}`}
+                                                                        >
+                                                                            {responsibility}
+                                                                        </li>
+                                                                    );
+                                                                })
                                                             }
                                                         </ul>
                                                     </div>

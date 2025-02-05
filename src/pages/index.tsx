@@ -36,7 +36,7 @@ export default function Home() {
   }, [i18n.language]);
 
   const { ref: referencesRef, inView: referencesInView } = useInView({ threshold: 0.5, triggerOnce: false });
-  const { ref: contact_myRef, inView: contact_myInView } = useInView({ threshold: 0.5, triggerOnce: false });
+  const { ref: contact_myRef, inView: contact_myInView } = useInView({ threshold: 0.9, triggerOnce: true });
   const { ref: my_storyRef, inView: my_storyInView } = useInView({ threshold: 0.5, triggerOnce: false });
 
   if (!loader) return '';
