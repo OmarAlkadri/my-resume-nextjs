@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from "react";
+import React from "react";
 import { useInView } from "react-intersection-observer";
 
 const AnimatedListItem = ({ responsibility }: { responsibility: string }) => {
